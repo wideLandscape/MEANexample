@@ -1,3 +1,4 @@
 {
-  "secret": "A SECRET STRING TO SIGN OUR GOOD OLD JWT"
+  "secret": "A SECRET STRING TO SIGN OUR GOOD OLD JWT",
+  "DB": "mongodb://localhost:27017/MEANexample"
 }
