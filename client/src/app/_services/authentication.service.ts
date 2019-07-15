@@ -25,10 +25,10 @@ export class AuthenticationService {
     return this.currentEmployeeSubject.value;
   }
 
-  login(EmployeeName: string, password: string) {
+  login(username: string, password: string) {
     return this.http
       .post<any>(`${this.config.apiUrl}/employees/authenticate`, {
-        EmployeeName,
+        username,
         password
       })
       .pipe(
