@@ -24,8 +24,10 @@ export class AppComponent {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
-
+  isLogged() {
+    return this.currentEmployee;
+  }
   isAdmin() {
-    return this.currentEmployee && this.currentEmployee.isAdmin;
+    return this.isLogged() && this.currentEmployee.isAdmin;
   }
 }

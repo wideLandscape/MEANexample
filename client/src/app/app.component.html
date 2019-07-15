@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-sm bg-light" *ngIf="isAdmin()">
+<nav class="navbar navbar-expand-sm bg-light" *ngIf="isLogged()">
   <div class="container-fluid">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" *ngIf="isAdmin()">
       <li class="nav-item">
         <a routerLink="reviews" class="nav-link" routerLinkActive="active">
           Reviews
@@ -10,6 +10,11 @@
         <a routerLink="employees" class="nav-link" routerLinkActive="active">
           Employees
         </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="#" (click)="logout()" class="nav-link">Logout</a>
       </li>
     </ul>
   </div>
