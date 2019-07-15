@@ -24,4 +24,8 @@ export class AppComponent {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
+
+  isAdmin() {
+    return this.currentEmployee && this.currentEmployee.isAdmin;
+  }
 }
