@@ -3,8 +3,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   mongoose = require('mongoose'),
-  config = require('./config.json');
-//jwt = require('./_helpers/jwt');
+  config = require('./config.json'),
+  jwt = require('./_helpers/jwt');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
@@ -19,6 +19,9 @@ mongoose.connect(config.DB, { useNewUrlParser: true }).then(
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+// use JWT auth to secure the api
+app.use(jwt());
+
 const port = process.env.PORT || 4000;
 
 const server = app.listen(port, function() {
