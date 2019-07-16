@@ -6,9 +6,9 @@
 <h3>List</h3>
 <ul class="list-group">
   <li
-    *ngFor="let employee of employees; trackBy: employee?.id"
+    *ngFor="let employee of employees; trackBy: employee?._id"
     class="list-group-item"
-    [class.active]="isActive(employee.id)"
+    [class.active]="isActive(employee._id)"
     (click)="activate(employee)"
   >
     {{ employee.username }}
