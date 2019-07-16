@@ -34,11 +34,18 @@ export class AdminComponent implements OnInit {
   }
 
   delete(id: string) {
-    console.log('delete', id);
+    this.employeesService
+      .delete(id)
+      .pipe(first())
+      .subscribe(data => {
+        this.alertService.success('Deleted successfully');
+        this.showForm = false;
+        this.getEmployees();
+      });
   }
 
   successForm(employee: Employee) {
-    this.alertService.success('Registration successful', true);
+    this.alertService.success('Registration successful');
     this.showForm = false;
     this.getEmployees();
   }

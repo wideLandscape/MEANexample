@@ -16,4 +16,8 @@ export class EmployeesService {
   add(employee: Employee) {
     return this.http.post(`${config.apiUrl}/employees/add`, employee);
   }
+
+  delete(id: string) {
+    return this.http.get(`${config.apiUrl}/employees/delete/${id}`);
+  }
 }
