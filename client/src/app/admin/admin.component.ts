@@ -12,6 +12,7 @@ export class AdminComponent implements OnInit {
   employees: Employee[];
   activeId = '';
   showForm = false;
+  editableEmployee: Employee;
   constructor(
     private employeesService: EmployeesService,
     private alertService: AlertService
@@ -27,10 +28,18 @@ export class AdminComponent implements OnInit {
 
   toggleActivation(employee: Employee) {
     this.activeId = employee._id === this.activeId ? '' : employee._id;
+    this.editableEmployee = undefined;
   }
 
   toggleShowForm() {
     this.showForm = !this.showForm;
+    this.editableEmployee = undefined;
+  }
+
+  showEditForm(employee: Employee) {
+    console.log(employee);
+    this.showForm = true;
+    this.editableEmployee = employee;
   }
 
   delete(id: string) {
