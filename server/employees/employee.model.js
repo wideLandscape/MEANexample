@@ -16,7 +16,8 @@ const Employee = new Schema(
       type: String
     },
     password: {
-      type: String
+      type: String,
+      required: true
     },
     isAdmin: {
       type: Boolean,
