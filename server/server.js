@@ -3,7 +3,8 @@ const express = require('express'),
   cors = require('cors'),
   mongoose = require('mongoose'),
   config = require('./config.json'),
-  jwt = require('./_helpers/jwt');
+  jwt = require('./_helpers/jwt'),
+  errorHandler = require('./_helpers/error-handler');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
@@ -22,7 +23,7 @@ app.use(cors());
 // use JWT auth to secure the api
 app.use(jwt());
 app.use('/employees', require('./employees/employees.controller'));
-
+app.use(errorHandler);
 const port = process.env.PORT || 4000;
 
 const server = app.listen(port, function() {
