@@ -25,8 +25,8 @@ export class AdminComponent implements OnInit {
     return this.activeId === id;
   }
 
-  activate(employee: Employee) {
-    this.activeId = employee._id;
+  toggleActivation(employee: Employee) {
+    this.activeId = employee._id === this.activeId ? '' : employee._id;
   }
 
   toggleShowForm() {
