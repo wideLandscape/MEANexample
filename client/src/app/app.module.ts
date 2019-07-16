@@ -10,8 +10,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { EmployeeFormComponent } from './admin/employee-form/employee-form.component';
+import { AlertComponent } from './_components/alert/alert.component';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, AdminComponent, EmployeeFormComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    AdminComponent,
+    EmployeeFormComponent,
+    AlertComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
