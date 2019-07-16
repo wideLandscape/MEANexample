@@ -6,6 +6,7 @@ const employeeService = require('./employee.service');
 // routes
 router.post('/authenticate', authenticate);
 router.get('/', getAll);
+router.post('/add', add);
 
 module.exports = router;
 
@@ -24,5 +25,11 @@ function getAll(req, res, next) {
   employeeService
     .getAll()
     .then(users => res.json(users))
+    .catch(err => next(err));
+}
+function add(req, res, next) {
+  employeeService
+    .add(req.body)
+    .then(user => res.json(user))
     .catch(err => next(err));
 }

@@ -31,7 +31,18 @@ async function getAll() {
     console.log(err);
   }
 }
+
+async function add(user) {
+  try {
+    const employee = new Employees(user);
+    return await employee.save();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 module.exports = {
   authenticate,
-  getAll
+  getAll,
+  add
 };
