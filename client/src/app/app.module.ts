@@ -9,8 +9,9 @@ import { AdminComponent } from './admin/admin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { EmployeeFormComponent } from './admin/employee-form/employee-form.component';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, AdminComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent, AdminComponent, EmployeeFormComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
