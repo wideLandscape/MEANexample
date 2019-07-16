@@ -18,12 +18,7 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.employeesService
-      .getAll()
-      .pipe(first())
-      .subscribe((data: Employee[]) => {
-        this.employees = data;
-      });
+    this.getEmployees();
   }
 
   isActive(id: string) {
@@ -39,8 +34,18 @@ export class AdminComponent implements OnInit {
   }
   successForm(employee: Employee) {
     this.alertService.success('Registration successful', true);
+    this.showForm = false;
+    this.getEmployees();
   }
   errorForm(error: any) {
     this.alertService.error(error);
+  }
+  private getEmployees() {
+    this.employeesService
+      .getAll()
+      .pipe(first())
+      .subscribe((data: Employee[]) => {
+        this.employees = data;
+      });
   }
 }
