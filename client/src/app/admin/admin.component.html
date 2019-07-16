@@ -1,5 +1,9 @@
-<h2>Employees</h2>
+<h2 class="title">Employees</h2>
 
+<h3>Add</h3>
+<app-employee-form></app-employee-form>
+
+<h3>List</h3>
 <ul class="list-group">
   <li
     *ngFor="let employee of employees; trackBy: employee?.id"
