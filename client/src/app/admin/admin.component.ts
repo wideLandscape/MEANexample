@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from '../_models/Employee';
 import { EmployeesService } from '../_services/employees.service';
 import { first } from 'rxjs/operators';
-
+// import { AlertService } from '../../_services/authentication.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -33,5 +33,13 @@ export class AdminComponent implements OnInit {
 
   toggleShowForm() {
     this.showForm = !this.showForm;
+  }
+  successForm(employee: Employee) {
+    console.log('success', employee);
+    //   this.alertService.success('Registration successful', true);
+  }
+  errorForm(error) {
+    console.log('error', error);
+    //       this.alertService.error(error);
   }
 }

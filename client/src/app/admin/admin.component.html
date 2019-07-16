@@ -9,7 +9,10 @@
 </nav>
 
 <div class="collapse" [class.show]="showForm">
-  <app-employee-form></app-employee-form>
+  <app-employee-form
+    (success)="successForm($event)"
+    (error)="errorForm($event)"
+  ></app-employee-form>
 </div>
 
 <ul class="list-group" *ngIf="!showForm">

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { EmployeesService } from '../../_services/employees.service';
-// import { AlertService } from '../../_services/authentication.service';
+import { Employee } from 'src/app/_models/Employee';
+
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.component.html',
@@ -13,6 +14,12 @@ export class EmployeeFormComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
+
+  @Output()
+  success: EventEmitter<Employee> = new EventEmitter<Employee>();
+  @Output()
+  error: EventEmitter<any> = new EventEmitter<any>();
+
   // convenience getter for easy access to form fields
   get formControls() {
     return this.registerForm.controls;
@@ -30,7 +37,7 @@ export class EmployeeFormComponent implements OnInit {
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      isAdmin: []
+      isAdmin: false
     });
   }
 
@@ -48,13 +55,13 @@ export class EmployeeFormComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          //   this.alertService.success('Registration successful', true);
           this.loading = false;
           this.registerForm.reset();
+          this.success.emit(data as Employee);
         },
         error => {
-          //       this.alertService.error(error);
           this.loading = false;
+          this.error.emit(error);
         }
       );
   }
