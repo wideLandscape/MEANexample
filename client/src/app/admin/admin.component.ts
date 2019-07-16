@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 export class AdminComponent implements OnInit {
   employees: Employee[];
   activeId = '';
+  showForm = false;
   constructor(private employeesService: EmployeesService) {}
 
   ngOnInit() {
@@ -28,5 +29,9 @@ export class AdminComponent implements OnInit {
 
   activate(employee: Employee) {
     this.activeId = employee._id;
+  }
+
+  toggleShowForm() {
+    this.showForm = !this.showForm;
   }
 }

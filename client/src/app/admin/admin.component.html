@@ -1,10 +1,18 @@
-<h2 class="title">Employees</h2>
+<nav class="navbar">
+  <span class="navbar-text h2">
+    Employees
+  </span>
 
-<h3>Add</h3>
-<app-employee-form></app-employee-form>
+  <button class="btn btn-primary" type="button" (click)="toggleShowForm()">
+    {{ showForm ? 'X' : 'Add' }}
+  </button>
+</nav>
 
-<h3>List</h3>
-<ul class="list-group">
+<div class="collapse" [class.show]="showForm">
+  <app-employee-form></app-employee-form>
+</div>
+
+<ul class="list-group" *ngIf="!showForm">
   <li
     *ngFor="let employee of employees; trackBy: employee?._id"
     class="list-group-item"
