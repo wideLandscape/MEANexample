@@ -1,3 +1,85 @@
-<p>
-  employee-form works!
-</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input
+      type="text"
+      formControlName="firstName"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && formControls.firstName.errors }"
+    />
+    <div
+      *ngIf="submitted && formControls.firstName.errors"
+      class="invalid-feedback"
+    >
+      <div *ngIf="formControls.firstName.errors.required">
+        First Name is required
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input
+      type="text"
+      formControlName="lastName"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && formControls.lastName.errors }"
+    />
+    <div
+      *ngIf="submitted && formControls.lastName.errors"
+      class="invalid-feedback"
+    >
+      <div *ngIf="formControls.lastName.errors.required">
+        Last Name is required
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      formControlName="username"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && formControls.username.errors }"
+    />
+    <div
+      *ngIf="submitted && formControls.username.errors"
+      class="invalid-feedback"
+    >
+      <div *ngIf="formControls.username.errors.required">
+        Username is required
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      formControlName="password"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && formControls.password.errors }"
+    />
+    <div
+      *ngIf="submitted && formControls.password.errors"
+      class="invalid-feedback"
+    >
+      <div *ngIf="formControls.password.errors.required">
+        Password is required
+      </div>
+      <div *ngIf="formControls.password.errors.minlength">
+        Password must be at least 6 characters
+      </div>
+    </div>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" formControlName="isAdmin" />
+    <label class="form-check-label" for="isAdmin">is Admin</label>
+  </div>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-primary">Register</button>
+    <img
+      *ngIf="loading"
+      class="pl-3"
+      src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+    />
+  </div>
+</form>
