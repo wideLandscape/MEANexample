@@ -1,5 +1,4 @@
 const express = require('express'),
-  path = require('path'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   mongoose = require('mongoose'),
@@ -10,6 +9,26 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
   () => {
     console.log('Database is connected');
+
+    const Employees = require('./employees/employee.model');
+    console.log('seek');
+    Employees.findOne({ isAdmin: true }, (err, admin) => {
+      if (err || !admin) {
+        admin = new Employees({
+          username: 'admin',
+          password: 'admin',
+          isAdmin: true
+        });
+        admin
+          .save()
+          .then(admin => {
+            console.log('admin created', admin);
+          })
+          .catch(err => {
+            console.log('could not create admin :(', err);
+          });
+      }
+    });
   },
   err => {
     console.log('Can not connect to the database' + err);
