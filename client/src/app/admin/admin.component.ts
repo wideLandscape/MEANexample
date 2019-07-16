@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 })
 export class AdminComponent implements OnInit {
   employees: Employee[];
+  activeId = -1;
   constructor(private employeesService: EmployeesService) {}
 
   ngOnInit() {
@@ -19,5 +20,13 @@ export class AdminComponent implements OnInit {
       .subscribe((data: Employee[]) => {
         this.employees = data;
       });
+  }
+
+  isActive(id: number) {
+    return this.activeId === id;
+  }
+
+  activate(employee: Employee) {
+    this.activeId = employee.id;
   }
 }

@@ -1,3 +1,12 @@
-<div *ngFor="let employee of employees">
-  {{ employee.username }}
-</div>
+<h2>Employees</h2>
+
+<ul class="list-group">
+  <li
+    *ngFor="let employee of employees; trackBy: employee?.id"
+    class="list-group-item"
+    [class.active]="isActive(employee.id)"
+    (click)="activate(employee)"
+  >
+    {{ employee.username }}
+  </li>
+</ul>
