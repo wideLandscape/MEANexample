@@ -1,9 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { EmployeesService } from '../../_services/employees.service';
 import { Employee } from 'src/app/_models/Employee';
+
+type Label = 'Save' | 'Update';
 
 @Component({
   selector: 'app-employee-form',
@@ -14,12 +16,26 @@ export class EmployeeFormComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
-
+  label: Label = 'Save';
   @Output()
   success: EventEmitter<Employee> = new EventEmitter<Employee>();
   @Output()
   error: EventEmitter<any> = new EventEmitter<any>();
+  @Input('employee')
+  set editableEmployee(employee: Employee) {
+    if (this.registerForm) {
+      employee ? this.setEditEmployeeForm(employee) : this.setNewEmployeeForm();
+    }
+  }
 
+  setNewEmployeeForm() {
+    this.registerForm.reset();
+    this.label = 'Save';
+  }
+  setEditEmployeeForm(employee: Employee) {
+    this.registerForm.patchValue(employee);
+    this.label = 'Update';
+  }
   // convenience getter for easy access to form fields
   get formControls() {
     return this.registerForm.controls;
