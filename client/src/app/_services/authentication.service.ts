@@ -4,13 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Employee } from '../_models/Employee';
+import { config } from '../_helpers/config';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
-  private config: any = {
-    apiUrl: 'http://localhost:4000'
-  };
-
   private currentEmployeeSubject: BehaviorSubject<Employee>;
   public currentEmployee: Observable<Employee>;
 
@@ -27,7 +26,7 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(`${this.config.apiUrl}/employees/authenticate`, {
+      .post<any>(`${config.apiUrl}/employees/authenticate`, {
         username,
         password
       })
