@@ -7,15 +7,17 @@ const express = require('express'),
   errorHandler = require('./_helpers/error-handler');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.DB, { useNewUrlParser: true }).then(
-  () => {
-    console.log('Database is connected');
-    initEmployees();
-  },
-  err => {
-    console.log('Can not connect to the database' + err);
-  }
-);
+mongoose
+  .connect(config.DB, { useNewUrlParser: true, useCreateIndex: true })
+  .then(
+    () => {
+      console.log('Database is connected');
+      initEmployees();
+    },
+    err => {
+      console.log('Can not connect to the database' + err);
+    }
+  );
 
 const app = express();
 app.use(bodyParser.json());
