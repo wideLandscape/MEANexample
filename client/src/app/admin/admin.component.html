@@ -30,11 +30,11 @@
       {{ employee.username }}
     </div>
     <div class="card-body" *ngIf="isActive(employee._id)">
-      <div>
-        <p class="card-text">FirstName: {{ employee.firstName }}</p>
-        <p class="card-text">LastName: {{ employee.lastName }}</p>
-        <p class="card-text">Is Admin: {{ employee.isAdmin }}</p>
-      </div>
+      <p class="card-text font-weight-bold" *ngIf="employee.isAdmin">
+        Admin
+      </p>
+      <p class="card-text">FirstName: {{ employee.firstName }}</p>
+      <p class="card-text">LastName: {{ employee.lastName }}</p>
       <div class="d-flex justify-content-end">
         <div class="mr-auto p-2">
           <button
