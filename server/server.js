@@ -9,26 +9,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
   () => {
     console.log('Database is connected');
-
-    const Employees = require('./employees/employee.model');
-    console.log('seek');
-    Employees.findOne({ isAdmin: true }, (err, admin) => {
-      if (err || !admin) {
-        admin = new Employees({
-          username: 'admin',
-          password: 'admin',
-          isAdmin: true
-        });
-        admin
-          .save()
-          .then(admin => {
-            console.log('admin created', admin);
-          })
-          .catch(err => {
-            console.log('could not create admin :(', err);
-          });
-      }
-    });
+    initEmployees();
   },
   err => {
     console.log('Can not connect to the database' + err);
@@ -47,3 +28,21 @@ const port = process.env.PORT || 4000;
 const server = app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
+
+const initEmployees = async () => {
+  const Employees = require('./employees/employee.model');
+  try {
+    let admin = await Employees.findOne({ isAdmin: true });
+    if (!admin) {
+      admin = new Employees({
+        username: 'admin',
+        password: 'admin',
+        isAdmin: true
+      });
+      await admin.save();
+      console.log('admin created', admin);
+    }
+  } catch (e) {
+    console.log('could not create admin :(', e);
+  }
+};
