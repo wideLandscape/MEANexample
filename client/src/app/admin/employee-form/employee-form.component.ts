@@ -17,6 +17,7 @@ export class EmployeeFormComponent implements OnInit {
   loading = false;
   submitted = false;
   label: Label = 'Save';
+  id = '';
   @Output()
   success: EventEmitter<Employee> = new EventEmitter<Employee>();
   @Output()
@@ -31,10 +32,12 @@ export class EmployeeFormComponent implements OnInit {
   setNewEmployeeForm() {
     this.registerForm.reset();
     this.label = 'Save';
+    this.id = '';
   }
   setEditEmployeeForm(employee: Employee) {
     this.registerForm.patchValue(employee);
     this.label = 'Update';
+    this.id = employee._id;
   }
   // convenience getter for easy access to form fields
   get formControls() {
@@ -65,8 +68,7 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     this.loading = true;
-    this.employeesService
-      .add(this.registerForm.value)
+    this.saveForm()
       .pipe(first())
       .subscribe(
         data => {
@@ -79,5 +81,10 @@ export class EmployeeFormComponent implements OnInit {
           this.error.emit(error);
         }
       );
+  }
+  private saveForm() {
+    return this.id.length > 0
+      ? this.employeesService.update(this.registerForm.value, this.id)
+      : this.employeesService.add(this.registerForm.value);
   }
 }

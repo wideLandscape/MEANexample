@@ -20,4 +20,8 @@ export class EmployeesService {
   delete(id: string) {
     return this.http.get(`${config.apiUrl}/employees/delete/${id}`);
   }
+
+  update(employee: Employee, id: string) {
+    return this.http.post(`${config.apiUrl}/employees/update/${id}`, employee);
+  }
 }
