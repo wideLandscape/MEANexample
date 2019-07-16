@@ -8,6 +8,7 @@ router.post('/authenticate', authenticate);
 router.get('/', getAll);
 router.post('/add', add);
 router.get('/delete/:id', remove);
+router.post('/update/:id', update);
 
 module.exports = router;
 
@@ -38,5 +39,14 @@ function remove(req, res, next) {
   employeeService
     .remove(req.params.id)
     .then(user => res.json('Successfully removed'))
+    .catch(err => next(err));
+}
+
+function update(req, res, next) {
+  employeeService
+    .update(req.body, req.params.id)
+    .then(user => {
+      res.json('Update complete');
+    })
     .catch(err => next(err));
 }

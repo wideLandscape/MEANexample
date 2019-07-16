@@ -20,6 +20,7 @@ async function authenticate({ username, password }) {
     }
   } catch (err) {
     console.log(err);
+    throw new Error('Unable to authenticate');
   }
 }
 
@@ -29,6 +30,7 @@ async function getAll() {
     return await Employees.find({}, { password: 0 });
   } catch (err) {
     console.log(err);
+    throw new Error('Unable to query the database');
   }
 }
 
@@ -38,6 +40,7 @@ async function add(user) {
     return await employee.save();
   } catch (err) {
     console.log(err);
+    throw new Error('Unable to add the user');
   }
 }
 
@@ -46,6 +49,21 @@ async function remove(id) {
     return await Employees.findByIdAndRemove({ _id: id });
   } catch (err) {
     console.log(err);
+    throw new Error('Unable to delete the user');
+  }
+}
+async function update(body, id) {
+  try {
+    const employee = await Employees.findById(id);
+    employee.username = body.username;
+    employee.firstName = body.firstName;
+    employee.lastName = body.lastName;
+    employee.password = body.password;
+    employee.isAdmin = body.isAdmin;
+    return await employee.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to update the database');
   }
 }
 
@@ -53,5 +71,6 @@ module.exports = {
   authenticate,
   getAll,
   add,
-  remove
+  remove,
+  update
 };
