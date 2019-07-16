@@ -32,6 +32,11 @@ export class AdminComponent implements OnInit {
   toggleShowForm() {
     this.showForm = !this.showForm;
   }
+
+  delete(id: string) {
+    console.log('delete', id);
+  }
+
   successForm(employee: Employee) {
     this.alertService.success('Registration successful', true);
     this.showForm = false;

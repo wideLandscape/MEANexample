@@ -15,13 +15,27 @@
   ></app-employee-form>
 </div>
 
-<ul class="list-group" *ngIf="!showForm">
-  <li
+<div *ngIf="!showForm">
+  <div
     *ngFor="let employee of employees; trackBy: employee?._id"
-    class="list-group-item"
-    [class.active]="isActive(employee._id)"
+    class="card border ac-employee-card"
+    [class.border-primary]="isActive(employee._id)"
     (click)="activate(employee)"
   >
-    {{ employee.username }}
-  </li>
-</ul>
+    <div class="card-header" [class.border-primary]="isActive(employee._id)">
+      {{ employee.username }}
+    </div>
+    <div class="card-body" *ngIf="isActive(employee._id)">
+      <p class="card-text">FirstName: {{ employee.firstName }}</p>
+      <p class="card-text">LastName: {{ employee.lastName }}</p>
+      <p class="card-text">Is Admin: {{ employee.isAdmin }}</p>
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="delete(employee._id)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
