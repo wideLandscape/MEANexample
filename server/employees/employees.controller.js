@@ -7,6 +7,7 @@ const employeeService = require('./employee.service');
 router.post('/authenticate', authenticate);
 router.get('/', getAll);
 router.post('/add', add);
+router.get('/delete/:id', remove);
 
 module.exports = router;
 
@@ -31,5 +32,11 @@ function add(req, res, next) {
   employeeService
     .add(req.body)
     .then(user => res.json(user))
+    .catch(err => next(err));
+}
+function remove(req, res, next) {
+  employeeService
+    .remove(req.params.id)
+    .then(user => res.json('Successfully removed'))
     .catch(err => next(err));
 }

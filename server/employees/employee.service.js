@@ -41,8 +41,17 @@ async function add(user) {
   }
 }
 
+async function remove(id) {
+  try {
+    return await Employees.findByIdAndRemove({ _id: id });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 module.exports = {
   authenticate,
   getAll,
-  add
+  add,
+  remove
 };
