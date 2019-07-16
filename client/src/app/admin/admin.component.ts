@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from '../_models/Employee';
 import { EmployeesService } from '../_services/employees.service';
 import { first } from 'rxjs/operators';
-// import { AlertService } from '../../_services/authentication.service';
+import { AlertService } from '../_services/alert.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -12,7 +12,10 @@ export class AdminComponent implements OnInit {
   employees: Employee[];
   activeId = '';
   showForm = false;
-  constructor(private employeesService: EmployeesService) {}
+  constructor(
+    private employeesService: EmployeesService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
     this.employeesService
@@ -35,11 +38,9 @@ export class AdminComponent implements OnInit {
     this.showForm = !this.showForm;
   }
   successForm(employee: Employee) {
-    console.log('success', employee);
-    //   this.alertService.success('Registration successful', true);
+    this.alertService.success('Registration successful', true);
   }
-  errorForm(error) {
-    console.log('error', error);
-    //       this.alertService.error(error);
+  errorForm(error: any) {
+    this.alertService.error(error);
   }
 }
