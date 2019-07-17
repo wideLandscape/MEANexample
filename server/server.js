@@ -25,6 +25,8 @@ app.use(cors());
 // use JWT auth to secure the api
 app.use(jwt());
 app.use('/employees', require('./employees/employees.controller'));
+app.use('/reviews', require('./reviews/reviews.controller'));
+
 app.use(errorHandler);
 const port = process.env.PORT || 4000;
 
