@@ -1,12 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Employee = require('../employees/employee.model');
-
+const ObjectId = mongoose.Schema.Types.ObjectId;
 // Define collection and schema for Review
 const Review = new Schema(
   {
     employee: {
-      type: Employee.schema,
+      type: {
+        _id: {
+          type: ObjectId,
+          required: true
+        },
+        username: {
+          type: String,
+          required: true
+        },
+        firstName: {
+          type: String
+        },
+        lastName: {
+          type: String
+        }
+      },
       required: true
     },
     questions: {
