@@ -11,6 +11,7 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
 import { AlertComponent } from './_components/alert/alert.component';
+import { ReviewComponent } from './review/review.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,8 @@ import { AlertComponent } from './_components/alert/alert.component';
     LoginComponent,
     EmployeeComponent,
     EmployeeFormComponent,
-    AlertComponent
+    AlertComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,7 @@ import { EmployeeComponent } from './employee/employee.component';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AdminGuard } from './_guards/admin.guard';
+import { ReviewComponent } from './review/review.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'employee',
     component: EmployeeComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'review',
+    component: ReviewComponent,
     canActivate: [AdminGuard]
   },
   // otherwise redirect to home
