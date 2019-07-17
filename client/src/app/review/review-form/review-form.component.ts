@@ -50,7 +50,7 @@ export class ReviewFormComponent implements OnInit {
     this.id = '';
   }
   setEditReviewForm(review: Review) {
-    this.registerForm.patchValue(review);
+    this.registerForm.patchValue(this.review2form(review));
     this.label = 'Update';
     this.id = review._id;
   }
@@ -71,6 +71,10 @@ export class ReviewFormComponent implements OnInit {
       active: true
     });
     this.addQuestions();
+  }
+
+  selectEmployee(c1: any, c2: any): boolean {
+    return c1 && c2 ? c1._id === c2._id : c1 === c2;
   }
 
   onSubmit() {
@@ -130,12 +134,26 @@ export class ReviewFormComponent implements OnInit {
 
   private form2review(formValue: any) {
     const selectedQuestions = [];
-    formValue.questions.map((selected: boolean, i: number) => {
+    formValue.questions.forEach((selected: boolean, i: number) => {
       if (selected) {
         selectedQuestions.push(this.questions[i].text);
       }
     });
     formValue.questions = selectedQuestions;
     return formValue;
+  }
+  private review2form(review: Review) {
+    const checkBoxes: boolean[] = [];
+
+    this.questions.forEach((question: Question) => {
+      checkBoxes.push(review.questions.indexOf(question.text) > -1);
+    });
+    const { employee, active } = review;
+    return {
+      ...review,
+      questions: checkBoxes,
+      employee,
+      active
+    };
   }
 }

@@ -5,6 +5,7 @@
       formControlName="employee"
       class="form-control"
       [ngClass]="{ 'is-invalid': submitted && formControls.employee.errors }"
+      [compareWith]="selectEmployee"
     >
       <option [ngValue]="null" disabled>Choose employee</option>
       <option
