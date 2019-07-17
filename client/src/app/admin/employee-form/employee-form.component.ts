@@ -25,6 +25,7 @@ export class EmployeeFormComponent implements OnInit {
   @Input('employee')
   set editableEmployee(employee: Employee) {
     if (this.registerForm) {
+      this.submitted = false;
       employee ? this.setEditEmployeeForm(employee) : this.setNewEmployeeForm();
     }
   }
