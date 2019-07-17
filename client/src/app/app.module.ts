@@ -12,6 +12,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
 import { AlertComponent } from './_components/alert/alert.component';
 import { ReviewComponent } from './review/review.component';
+import { ReviewFormComponent } from './review/review-form/review-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { ReviewComponent } from './review/review.component';
     EmployeeComponent,
     EmployeeFormComponent,
     AlertComponent,
-    ReviewComponent
+    ReviewComponent,
+    ReviewFormComponent
   ],
   imports: [
     BrowserModule,
