@@ -32,12 +32,16 @@ export class AdminComponent implements OnInit {
   }
 
   toggleShowForm() {
+    if (!this.showForm) {
+      // close list as we are adding a new employee
+      this.activeId = '';
+    }
     this.showForm = !this.showForm;
     this.editableEmployee = undefined;
+    this.alertService.close();
   }
 
   showEditForm(employee: Employee) {
-    console.log(employee);
     this.showForm = true;
     this.editableEmployee = employee;
   }
@@ -54,8 +58,11 @@ export class AdminComponent implements OnInit {
   }
 
   successForm(employee: Employee) {
-    this.alertService.success('Registration successful');
+    this.alertService.success(
+      this.editableEmployee ? 'Sucessful update' : 'Employee created'
+    );
     this.showForm = false;
+    this.editableEmployee = undefined;
     this.getEmployees();
   }
   errorForm(error: any) {
