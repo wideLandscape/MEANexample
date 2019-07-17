@@ -5,18 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { AdminComponent } from './admin/admin.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
-import { EmployeeFormComponent } from './admin/employee-form/employee-form.component';
+import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
 import { AlertComponent } from './_components/alert/alert.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    AdminComponent,
+    EmployeeComponent,
     EmployeeFormComponent,
     AlertComponent
   ],

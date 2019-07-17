@@ -4,11 +4,11 @@ import { EmployeesService } from '../_services/employees.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../_services/alert.service';
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.sass']
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.sass']
 })
-export class AdminComponent implements OnInit {
+export class EmployeeComponent implements OnInit {
   employees: Employee[];
   activeId = '';
   showForm = false;
