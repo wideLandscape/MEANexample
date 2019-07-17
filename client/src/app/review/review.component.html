@@ -28,7 +28,7 @@
       [class.border-primary]="isActive(review._id)"
       (click)="toggleActivation(review)"
     >
-      {{ review.employee }}
+      {{ review.employee.username }}
     </div>
     <div class="card-body" *ngIf="isActive(review._id)">
       <p class="card-text font-weight-bold" *ngIf="review.active">
