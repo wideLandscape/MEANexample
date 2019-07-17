@@ -12,6 +12,7 @@ import { first } from 'rxjs/operators';
 import { ReviewsService } from 'src/app/_services/reviews.service';
 import { Review } from 'src/app/_models/Review';
 import { questions, Question } from 'src/app/_helpers/questions';
+import { Employee } from 'src/app/_models/Employee';
 
 type Label = 'Save' | 'Update';
 
@@ -27,10 +28,14 @@ export class ReviewFormComponent implements OnInit {
   submitted = false;
   label: Label = 'Save';
   id = '';
+
   @Output()
   success: EventEmitter<Review> = new EventEmitter<Review>();
   @Output()
   error: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input()
+  employees: Employee[];
   @Input('review')
   set editableReview(review: Review) {
     if (this.registerForm) {
@@ -61,7 +66,7 @@ export class ReviewFormComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      employee: ['', Validators.required],
+      employee: [null, Validators.required],
       questions: new FormArray([], this.minimumSelection(1)),
       active: true
     });
@@ -77,7 +82,8 @@ export class ReviewFormComponent implements OnInit {
     }
 
     this.loading = true;
-    this.saveForm()
+    const review = this.form2review(this.registerForm.value);
+    this.saveForm(review)
       .pipe(first())
       .subscribe(
         data => {
@@ -91,11 +97,11 @@ export class ReviewFormComponent implements OnInit {
         }
       );
   }
-  private saveForm() {
-    console.log(this.registerForm.value);
+
+  private saveForm(review) {
     return this.id.length > 0
-      ? this.reviewsService.update(this.registerForm.value, this.id)
-      : this.reviewsService.add(this.registerForm.value);
+      ? this.reviewsService.update(review, this.id)
+      : this.reviewsService.add(review);
   }
   private addQuestions() {
     this.questions.map((o, i) => {
@@ -121,4 +127,9 @@ export class ReviewFormComponent implements OnInit {
       // total up the number of checked checkboxes
       // tslint:disable-next-line: semicolon
       .reduce((prev, next) => (next ? prev + next : prev), 0);
+
+  private form2review(formValue: any) {
+    // TODO!
+    return formValue;
+  }
 }

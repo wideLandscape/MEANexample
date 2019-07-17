@@ -3,6 +3,8 @@ import { Review } from '../_models/Review';
 import { ReviewsService } from '../_services/reviews.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../_services/alert.service';
+import { EmployeesService } from '../_services/employees.service';
+import { Employee } from '../_models/Employee';
 @Component({
   selector: 'app-review',
   templateUrl: './review.component.html',
@@ -13,13 +15,16 @@ export class ReviewComponent implements OnInit {
   activeId = '';
   showForm = false;
   editableReview: Review;
+  employees: Employee[];
   constructor(
     private reviewsService: ReviewsService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private employeesService: EmployeesService
   ) {}
 
   ngOnInit() {
     this.getReviews();
+    this.getEmployees();
   }
 
   isActive(id: string) {
@@ -68,6 +73,14 @@ export class ReviewComponent implements OnInit {
       .pipe(first())
       .subscribe((data: Review[]) => {
         this.reviews = data;
+      });
+  }
+  private getEmployees() {
+    this.employeesService
+      .getAll()
+      .pipe(first())
+      .subscribe((data: Employee[]) => {
+        this.employees = data;
       });
   }
 }

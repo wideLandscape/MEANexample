@@ -1,12 +1,19 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label for="employee">Employee</label>
-    <input
-      type="text"
+    <label for="employee">Subject</label>
+    <select
       formControlName="employee"
       class="form-control"
       [ngClass]="{ 'is-invalid': submitted && formControls.employee.errors }"
-    />
+    >
+      <option [ngValue]="null" disabled>Choose employee</option>
+      <option
+        *ngFor="let employee of employees; let i = index"
+        [ngValue]="employee"
+      >
+        {{ employee.username }}
+      </option>
+    </select>
     <div
       *ngIf="submitted && formControls.employee.errors"
       class="invalid-feedback"
@@ -35,7 +42,11 @@
       *ngFor="let question of formControls.questions.controls; let i = index"
     >
       <label formArrayName="questions">
-        <input type="checkbox" [formControlName]="i" />
+        <input
+          type="checkbox"
+          [formControlName]="i"
+          [value]="questions[i].text"
+        />
         {{ questions[i].text }}
       </label>
     </div>
