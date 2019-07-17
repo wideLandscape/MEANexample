@@ -27,7 +27,7 @@ async function authenticate({ username, password }) {
 async function getAll() {
   try {
     // don't return the password to the client
-    return await Employees.find({}, { password: 0 });
+    return await Employees.find({}, { password: 0 }).sort({ username: 1 });
   } catch (err) {
     console.log(err);
     throw new Error('Unable to query the database');
