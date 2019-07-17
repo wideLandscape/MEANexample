@@ -20,34 +20,57 @@
 <div *ngIf="!showForm">
   <div
     *ngFor="let review of reviews; trackBy: review?._id"
-    class="card border ac-review-card"
+    class="card border ac-card-bottom"
     [class.border-primary]="isActive(review._id)"
   >
     <div
-      class="card-header"
+      class="card-header d-flex justify-content"
       [class.border-primary]="isActive(review._id)"
       (click)="toggleActivation(review)"
     >
-      {{ review.employee.username }}
+      <span class="mr-auto">{{ review.employee.username }}</span>
+      <span class="card-text font-weight-bold">
+        {{ review.active ? 'Active' : 'Not active' }}
+      </span>
     </div>
-    <div class="card-body" *ngIf="isActive(review._id)">
-      <p class="card-text font-weight-bold" *ngIf="review.active">
-        Active
-      </p>
-      <p class="card-text" *ngFor="let question of review.questions">
-        {{ question }}
-      </p>
-      <div class="d-flex justify-content-end">
-        <div class="mr-auto p-2">
-          <button
-            class="btn btn-primary"
-            type="button"
-            (click)="showEditForm(review._id)"
-          >
-            Edit
-          </button>
+    <div class="card-body" (click)="toggleActivation(review)">
+      <div class="row">
+        <div class="col border m-2 p-2">
+          <p class="card-text bold border-bottom">
+            Questions:
+          </p>
+          <p class="card-text" *ngFor="let question of review.questions">
+            {{ question }}
+          </p>
+        </div>
+        <div class="col border border-warning m-2 p-2">
+          <p class="card-text bold border-bottom">
+            Assigned reviewers:
+          </p>
+          <p class="card-text" *ngFor="let question of review.questions">
+            {{ question }}
+          </p>
         </div>
       </div>
+    </div>
+    <div
+      class="card-footer d-flex justify-content-end"
+      *ngIf="isActive(review._id)"
+    >
+      <button
+        class="btn btn-primary mr-auto"
+        type="button"
+        (click)="showEditForm(review._id)"
+      >
+        Edit
+      </button>
+      <button
+        class="btn btn-warning"
+        type="button"
+        (click)="showEditForm(review._id)"
+      >
+        Assign
+      </button>
     </div>
   </div>
 </div>
