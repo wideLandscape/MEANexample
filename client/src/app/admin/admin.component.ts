@@ -41,9 +41,14 @@ export class AdminComponent implements OnInit {
     this.alertService.close();
   }
 
-  showEditForm(employee: Employee) {
-    this.showForm = true;
-    this.editableEmployee = employee;
+  showEditForm(id: string) {
+    this.employeesService
+      .get(id)
+      .pipe(first())
+      .subscribe((employee: Employee) => {
+        this.showForm = true;
+        this.editableEmployee = employee;
+      });
   }
 
   delete(id: string) {
@@ -59,7 +64,7 @@ export class AdminComponent implements OnInit {
 
   successForm(employee: Employee) {
     this.alertService.success(
-      this.editableEmployee ? 'Sucessful update' : 'Employee created'
+      this.editableEmployee ? 'Successful update' : 'Employee created'
     );
     this.showForm = false;
     this.editableEmployee = undefined;

@@ -24,4 +24,8 @@ export class EmployeesService {
   update(employee: Employee, id: string) {
     return this.http.post(`${config.apiUrl}/employees/update/${id}`, employee);
   }
+
+  get(id: string) {
+    return this.http.get(`${config.apiUrl}/employees/get/${id}`);
+  }
 }
