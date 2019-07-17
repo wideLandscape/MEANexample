@@ -1,10 +1,17 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+  FormControl,
+  ValidatorFn
+} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { ReviewsService } from 'src/app/_services/reviews.service';
 import { Review } from 'src/app/_models/Review';
-import { questions } from 'src/app/_helpers/questions';
+import { questions, Question } from 'src/app/_helpers/questions';
 
 type Label = 'Save' | 'Update';
 
@@ -14,6 +21,7 @@ type Label = 'Save' | 'Update';
   styleUrls: ['./review-form.component.sass']
 })
 export class ReviewFormComponent implements OnInit {
+  questions: Question[] = questions;
   registerForm: FormGroup;
   loading = false;
   submitted = false;
@@ -54,9 +62,10 @@ export class ReviewFormComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       employee: ['', Validators.required],
-      questions: new FormArray([]),
+      questions: new FormArray([], this.minimumSelection(1)),
       active: true
     });
+    this.addQuestions();
   }
 
   onSubmit() {
@@ -83,8 +92,33 @@ export class ReviewFormComponent implements OnInit {
       );
   }
   private saveForm() {
+    console.log(this.registerForm.value);
     return this.id.length > 0
       ? this.reviewsService.update(this.registerForm.value, this.id)
       : this.reviewsService.add(this.registerForm.value);
   }
+  private addQuestions() {
+    this.questions.map((o, i) => {
+      const control = new FormControl(i === 0); // if first item set to true, else false
+      (this.registerForm.controls.questions as FormArray).push(control);
+    });
+  }
+  private minimumSelection(min = 1) {
+    const validator: ValidatorFn = (formArray: FormArray) => {
+      const totalSelected = this.countChecked(formArray);
+      // if the total is not greater than the minimum, return the error message
+      console.log(totalSelected);
+      return totalSelected >= min ? null : { required: true };
+    };
+
+    return validator;
+  }
+
+  private countChecked = (formArray: FormArray) =>
+    formArray.controls
+      // get a list of checkbox values (boolean)
+      .map(control => control.value)
+      // total up the number of checked checkboxes
+      // tslint:disable-next-line: semicolon
+      .reduce((prev, next) => (next ? prev + next : prev), 0);
 }
