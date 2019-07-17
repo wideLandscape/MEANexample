@@ -52,6 +52,7 @@ export class AdminComponent implements OnInit {
   }
 
   delete(id: string) {
+    this.alertService.close();
     this.employeesService
       .delete(id)
       .pipe(first())
