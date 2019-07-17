@@ -54,7 +54,7 @@ async function remove(id) {
 }
 async function update(body, id) {
   try {
-    const employee = await Employees.findById(id);
+    const employee = await getById(id);
     employee.username = body.username;
     employee.firstName = body.firstName;
     employee.lastName = body.lastName;
@@ -67,10 +67,20 @@ async function update(body, id) {
   }
 }
 
+async function getById(id) {
+  try {
+    return await Employees.findById(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to get the document');
+  }
+}
+
 module.exports = {
   authenticate,
   getAll,
   add,
   remove,
-  update
+  update,
+  getById
 };

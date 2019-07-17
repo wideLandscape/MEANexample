@@ -9,6 +9,7 @@ router.get('/', getAll);
 router.post('/add', add);
 router.get('/delete/:id', remove);
 router.post('/update/:id', update);
+router.get('/get/:id', get);
 
 module.exports = router;
 
@@ -47,6 +48,14 @@ function update(req, res, next) {
     .update(req.body, req.params.id)
     .then(user => {
       res.json('Update complete');
+    })
+    .catch(err => next(err));
+}
+function get(req, res, next) {
+  employeeService
+    .getById(req.params.id)
+    .then(user => {
+      res.json(user);
     })
     .catch(err => next(err));
 }
