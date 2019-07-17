@@ -129,7 +129,13 @@ export class ReviewFormComponent implements OnInit {
       .reduce((prev, next) => (next ? prev + next : prev), 0);
 
   private form2review(formValue: any) {
-    // TODO!
+    const selectedQuestions = [];
+    formValue.questions.map((selected: boolean, i: number) => {
+      if (selected) {
+        selectedQuestions.push(this.questions[i].text);
+      }
+    });
+    formValue.questions = selectedQuestions;
     return formValue;
   }
 }
