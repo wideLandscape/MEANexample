@@ -4,6 +4,6 @@ export class Review {
   // tslint:disable-next-line: variable-name
   _id: string;
   employee: Employee;
-  questions: [];
+  questions: string[];
   active: boolean;
 }
