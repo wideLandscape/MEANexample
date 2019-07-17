@@ -1,3 +1,52 @@
-<p>
-  review works!
-</p>
+<nav class="navbar">
+  <span class="navbar-text h2">
+    Reviews
+  </span>
+
+  <button class="btn btn-primary" type="button" (click)="toggleShowForm()">
+    {{ showForm ? '&times;' : 'Add' }}
+  </button>
+</nav>
+
+<div class="collapse" [class.show]="showForm">
+  <!--app-review-form
+    [review]="editableReview"
+    (success)="successForm($event)"
+    (error)="errorForm($event)"
+  ></app-review-form-->
+</div>
+
+<div *ngIf="!showForm">
+  <div
+    *ngFor="let review of reviews; trackBy: review?._id"
+    class="card border ac-review-card"
+    [class.border-primary]="isActive(review._id)"
+  >
+    <div
+      class="card-header"
+      [class.border-primary]="isActive(review._id)"
+      (click)="toggleActivation(review)"
+    >
+      {{ review.employee }}
+    </div>
+    <div class="card-body" *ngIf="isActive(review._id)">
+      <p class="card-text font-weight-bold" *ngIf="review.active">
+        Active
+      </p>
+      <p class="card-text" *ngFor="let question of review.questions">
+        {{ question }}
+      </p>
+      <div class="d-flex justify-content-end">
+        <div class="mr-auto p-2">
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="showEditForm(review._id)"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
