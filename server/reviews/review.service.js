@@ -3,7 +3,18 @@ const Reviews = require('./review.model');
 
 async function getAll() {
   try {
-    return await Reviews.find({});
+    const reviews = await Reviews.find({}).sort({ 'employee.username': 1 });
+    await Reviews.populate(reviews, {
+      path: 'assignments',
+      select: { employee_id: 1 },
+      options: { lean: true }
+    });
+    await Reviews.populate(reviews, {
+      path: 'assignments.employee_id',
+      select: { username: 1 },
+      options: { lean: true }
+    });
+    return reviews;
   } catch (err) {
     console.log(err);
     throw new Error('Unable to query the database');

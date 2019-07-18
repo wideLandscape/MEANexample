@@ -47,8 +47,8 @@
           <p class="card-text bold border-bottom">
             Assigned reviewers:
           </p>
-          <p class="card-text" *ngFor="let question of review.questions">
-            {{ question }}
+          <p class="card-text" *ngFor="let assignment of review.assignments">
+            {{ assignment.employee_id.username }}
           </p>
         </div>
       </div>
