@@ -21,4 +21,10 @@ export class AssignmentsService {
   reviewers(id = this.current._id) {
     return this.http.get(`${config.apiUrl}/assignments/reviewers/${id}`);
   }
+
+  byReviewer(id: string, todo: boolean = true) {
+    return this.http.get(
+      `${config.apiUrl}/assignments/by-reviewer/${id}.${todo}`
+    );
+  }
 }
