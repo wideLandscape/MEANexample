@@ -1,16 +1,21 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const Review = require('../reviews/review.model');
+const Employee = require('../employees/employee.model');
+
 // Define collection and schema for Review
 const Assignment = new Schema(
   {
     review_id: {
       type: ObjectId,
-      required: true
+      required: true,
+      ref: Review
     },
     employee_id: {
       type: ObjectId,
-      required: true
+      required: true,
+      ref: Employee
     },
     results: {
       type: [{ question: { type: String }, value: { type: Number } }]
