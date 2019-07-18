@@ -13,6 +13,7 @@ import { EmployeeFormComponent } from './employee/employee-form/employee-form.co
 import { AlertComponent } from './_components/alert/alert.component';
 import { ReviewComponent } from './review/review.component';
 import { ReviewFormComponent } from './review/review-form/review-form.component';
+import { AssignmentComponent } from './assignment/assignment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import { ReviewFormComponent } from './review/review-form/review-form.component'
     EmployeeFormComponent,
     AlertComponent,
     ReviewComponent,
-    ReviewFormComponent
+    ReviewFormComponent,
+    AssignmentComponent
   ],
   imports: [
     BrowserModule,
