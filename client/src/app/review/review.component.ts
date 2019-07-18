@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 import { AlertService } from '../_services/alert.service';
 import { EmployeesService } from '../_services/employees.service';
 import { Employee } from '../_models/Employee';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssignmentsService } from '../_services/assignments.service';
 @Component({
   selector: 'app-review',
@@ -23,10 +23,14 @@ export class ReviewComponent implements OnInit {
     private alertService: AlertService,
     private employeesService: EmployeesService,
     private assignmentsService: AssignmentsService,
-    private router: Router
-  ) {}
+    private router: Router,
+    route: ActivatedRoute
+  ) {
+    this.activeId = route.snapshot.paramMap.get('active') || '';
+  }
 
   ngOnInit() {
+    this.assignmentsService.current = null;
     this.getReviews();
     this.getEmployees();
   }
