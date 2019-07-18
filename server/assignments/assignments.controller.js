@@ -10,7 +10,6 @@ router.get('/delete/:id', remove);
 module.exports = router;
 
 function add(req, res, next) {
-  console.log(req.body);
   assignmentService
     .add(req.body)
     .then(assignment => res.json(assignment))
