@@ -6,6 +6,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Employee } from '../_models/Employee';
 import { first } from 'rxjs/operators';
 import { EmployeesService } from '../_services/employees.service';
+import { Assignment } from '../_models/assignment';
+import { AlertService } from '../_services/alert.service';
 
 @Component({
   selector: 'app-assignment',
@@ -22,6 +24,7 @@ export class AssignmentComponent implements OnInit {
     private assignmentsService: AssignmentsService,
     private formBuilder: FormBuilder,
     private employeesService: EmployeesService,
+    private alertService: AlertService,
     router: Router
   ) {
     // redirect to home if already logged in
@@ -35,7 +38,7 @@ export class AssignmentComponent implements OnInit {
   }
   ngOnInit() {
     this.assignForm = this.formBuilder.group({
-      employee: [null, Validators.required]
+      employee_id: [null, Validators.required]
     });
     this.getEmployees();
   }
@@ -49,6 +52,38 @@ export class AssignmentComponent implements OnInit {
     }
 
     this.loading = true;
+    this.assignmentsService
+      .add({
+        review_id: this.assignmentsService.current._id,
+        employee_id: this.assignForm.value.employee_id
+      })
+      .pipe(first())
+      .subscribe(
+        (assignment: Assignment) => {
+          this.loading = false;
+          this.submitted = false;
+          this.assignForm.reset();
+          this.getEmployees();
+          this.alertService.success('Reviewer assigned');
+        },
+        error => {
+          this.loading = false;
+          this.alertService.error(error);
+        }
+      );
+  }
+
+  onRemove(id: string) {
+    this.submitted = true;
+    this.loading = true;
+    this.assignmentsService
+      .delete(id)
+      .pipe(first())
+      .subscribe((assignment: Assignment) => {
+        this.loading = false;
+        this.submitted = false;
+        this.getEmployees();
+      });
   }
 
   private getEmployees() {

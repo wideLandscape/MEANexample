@@ -31,25 +31,25 @@
 </div>
 <form [formGroup]="assignForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label for="employee">Add reviewer</label>
+    <label for="employee_id">Add reviewer</label>
     <select
-      formControlName="employee"
+      formControlName="employee_id"
       class="form-control"
-      [ngClass]="{ 'is-invalid': submitted && formControls.employee.errors }"
+      [ngClass]="{ 'is-invalid': submitted && formControls.employee_id.errors }"
     >
       <option [ngValue]="null" disabled>Choose employee</option>
       <option
         *ngFor="let employee of employees; let i = index"
-        [ngValue]="employee"
+        [ngValue]="employee._id"
       >
         {{ employee.username }}
       </option>
     </select>
     <div
-      *ngIf="submitted && formControls.employee.errors"
+      *ngIf="submitted && formControls.employee_id.errors"
       class="invalid-feedback"
     >
-      <div *ngIf="formControls.employee.errors.required">
+      <div *ngIf="formControls.employee_id.errors.required">
         Employee is required
       </div>
     </div>
