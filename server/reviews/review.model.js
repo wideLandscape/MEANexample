@@ -29,6 +29,15 @@ const Review = new Schema(
     active: {
       type: Boolean,
       default: true
+    },
+    assignments: {
+      type: [
+        {
+          type: ObjectId,
+          ref: 'Assignment'
+        }
+      ],
+      default: []
     }
   },
   {
