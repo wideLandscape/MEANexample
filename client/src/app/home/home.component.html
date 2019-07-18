@@ -1,3 +1,42 @@
-<p>
-  home works!
-</p>
+<nav class="navbar">
+  <span class="navbar-text h2">
+    Performance Reviews
+  </span>
+
+  <button
+    *ngIf="showForm"
+    class="btn btn-primary"
+    type="button"
+    (click)="viewForm(false)"
+  >
+    &times;
+  </button>
+</nav>
+
+<div class="collapse" [class.show]="showForm">
+  <!--app-review-form
+    [employees]="employees"
+    [review]="editableReview"
+    (success)="successForm($event)"
+    (error)="errorForm($event)"
+  ></app-review-form-->
+</div>
+
+<div *ngIf="!showForm">
+  <div
+    *ngFor="let review of reviews; trackBy: review?._id"
+    class="card border ac-card-bottom"
+  >
+    <div class="card-header d-flex justify-content" (click)="viewForm(true)">
+      {{ review.employee.username }}
+    </div>
+    <div class="card-body" (click)="viewForm(true)">
+      <p class="card-text bold border-bottom">
+        Questions:
+      </p>
+      <p class="card-text" *ngFor="let question of review.questions">
+        {{ question }}
+      </p>
+    </div>
+  </div>
+</div>
