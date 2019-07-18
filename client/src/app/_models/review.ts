@@ -1,4 +1,5 @@
-import { Employee } from './Employee';
+import { Employee } from './employee';
+import { Assignment } from './assignment';
 
 export class Review {
   // tslint:disable-next-line: variable-name
@@ -6,4 +7,5 @@ export class Review {
   employee: Employee;
   questions: string[];
   active: boolean;
+  assignments?: Assignment[];
 }
