@@ -42,9 +42,12 @@ async function getReviewers(review_id) {
 
 async function byReviewer(employee_id, todo = true) {
   try {
-    return await Assignment.find({ employee_id, done: !todo })
-    .populate('review_id', {
-      assignments: 0
+    return await Assignment.find({ employee_id, done: !todo }).populate({
+      path: 'review_id',
+      select: {
+        assignments: 0
+      },
+      match: { active: true }
     });
   } catch (err) {
     console.log(err);
