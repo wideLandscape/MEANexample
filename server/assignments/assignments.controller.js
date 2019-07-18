@@ -6,6 +6,7 @@ const assignmentService = require('./assignment.service');
 // routes
 router.post('/add', add);
 router.get('/delete/:id', remove);
+router.get('/reviewers/:id', getReviewers);
 
 module.exports = router;
 
@@ -19,5 +20,11 @@ function remove(req, res, next) {
   assignmentService
     .remove(req.params.id)
     .then(assignment => res.json('Successfully removed'))
+    .catch(err => next(err));
+}
+function getReviewers(req, res, next) {
+  assignmentService
+    .getReviewers(req.params.id)
+    .then(reviewers => res.json(reviewers))
     .catch(err => next(err));
 }

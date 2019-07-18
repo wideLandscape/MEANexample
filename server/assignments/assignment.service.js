@@ -19,8 +19,21 @@ async function remove(id) {
     throw new Error('Unable to remove the reviewer');
   }
 }
+async function getReviewers(review_id) {
+  try {
+    // don't return the password to the client
+    return await Assignment.find({ review_id }, { employee_id: 1 }).populate(
+      'employee_id',
+      { username: 1 }
+    );
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to query the database');
+  }
+}
 
 module.exports = {
   add,
-  remove
+  remove,
+  getReviewers
 };
