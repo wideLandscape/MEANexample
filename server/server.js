@@ -8,7 +8,11 @@ const express = require('express'),
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(config.DB, { useNewUrlParser: true, useCreateIndex: true })
+  .connect(config.DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
   .then(
     () => {
       console.log('Database is connected');
