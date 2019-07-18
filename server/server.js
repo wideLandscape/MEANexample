@@ -26,6 +26,7 @@ app.use(cors());
 app.use(jwt());
 app.use('/employees', require('./employees/employees.controller'));
 app.use('/reviews', require('./reviews/reviews.controller'));
+app.use('/assignments', require('./assignments/assignments.controller'));
 
 app.use(errorHandler);
 const port = process.env.PORT || 4000;
