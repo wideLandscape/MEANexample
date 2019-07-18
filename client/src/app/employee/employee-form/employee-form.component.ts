@@ -74,6 +74,7 @@ export class EmployeeFormComponent implements OnInit {
       .subscribe(
         data => {
           this.loading = false;
+          this.submitted = false;
           this.registerForm.reset();
           this.success.emit(data as Employee);
         },
