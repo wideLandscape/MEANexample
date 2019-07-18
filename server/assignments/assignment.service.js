@@ -40,9 +40,20 @@ async function getReviewers(review_id) {
     throw new Error('Unable to query the database');
   }
 }
-
+async function removeEmployeeAssignments(id) {
+  try {
+    const doc = await Assignment.findAndRemove({
+      employee_id: id
+    });
+    await reviewService.pull(doc);
+    return doc;
+  } catch (err) {
+    console.log(err);
+  }
+}
 module.exports = {
   add,
   remove,
-  getReviewers
+  getReviewers,
+  removeEmployeeAssignments
 };

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 // Require Employees model in our routes module
 const Employees = require('./employee.model');
+const AssignmentService = require('../assignments/assignment.service');
 
 async function authenticate({ username, password }) {
   try {
@@ -46,7 +47,9 @@ async function add(user) {
 
 async function remove(id) {
   try {
-    return await Employees.findByIdAndRemove({ _id: id });
+    const employee = await Employees.findByIdAndRemove({ _id: id });
+    await AssignmentService.removeEmployeeAssignments(id);
+    return employee;
   } catch (err) {
     console.log(err);
     throw new Error('Unable to delete the user');
