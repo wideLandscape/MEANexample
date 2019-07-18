@@ -5,6 +5,8 @@ import { first } from 'rxjs/operators';
 import { AlertService } from '../_services/alert.service';
 import { EmployeesService } from '../_services/employees.service';
 import { Employee } from '../_models/Employee';
+import { Router } from '@angular/router';
+import { AssignmentsService } from '../_services/assignments.service';
 @Component({
   selector: 'app-review',
   templateUrl: './review.component.html',
@@ -19,7 +21,9 @@ export class ReviewComponent implements OnInit {
   constructor(
     private reviewsService: ReviewsService,
     private alertService: AlertService,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private assignmentsService: AssignmentsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -55,7 +59,10 @@ export class ReviewComponent implements OnInit {
         this.editableReview = review;
       });
   }
-
+  assignReview(review: Review) {
+    this.assignmentsService.current = review;
+    this.router.navigate(['/assignment']);
+  }
   successForm(review: Review) {
     this.alertService.success(
       this.editableReview ? 'Successful update' : 'Review created'
