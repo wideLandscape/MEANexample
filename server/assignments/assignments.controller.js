@@ -7,6 +7,7 @@ const assignmentService = require('./assignment.service');
 router.post('/add', add);
 router.get('/delete/:id.:from', remove);
 router.get('/reviewers/:id', getReviewers);
+router.get('/by-reviewer/:id.:todo', byReviewer);
 
 module.exports = router;
 
@@ -26,5 +27,11 @@ function getReviewers(req, res, next) {
   assignmentService
     .getReviewers(req.params.id)
     .then(reviewers => res.json(reviewers))
+    .catch(err => next(err));
+}
+function byReviewer(req, res, next) {
+  assignmentService
+    .byReviewer(req.params.id, req.params.todo)
+    .then(assignments => res.json(assignments))
     .catch(err => next(err));
 }

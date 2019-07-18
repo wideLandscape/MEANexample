@@ -30,7 +30,6 @@ async function remove(id, from) {
 }
 async function getReviewers(review_id) {
   try {
-    // don't return the password to the client
     return await Assignment.find({ review_id }, { employee_id: 1 }).populate(
       'employee_id',
       { username: 1, _id: 1 }
@@ -40,6 +39,19 @@ async function getReviewers(review_id) {
     throw new Error('Unable to query the database');
   }
 }
+
+async function byReviewer(employee_id, todo = true) {
+  try {
+    return await Assignment.find({ employee_id, done: !todo })
+    .populate('review_id', {
+      assignments: 0
+    });
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to get assignments by reviewer');
+  }
+}
+
 async function removeEmployeeAssignments(id) {
   try {
     const doc = await Assignment.findAndRemove({
@@ -55,5 +67,6 @@ module.exports = {
   add,
   remove,
   getReviewers,
-  removeEmployeeAssignments
+  removeEmployeeAssignments,
+  byReviewer
 };
