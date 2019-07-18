@@ -91,7 +91,9 @@ export class AssignmentComponent implements OnInit {
       .reviewers()
       .pipe(first())
       .subscribe((data: any) => {
-        this.reviewers = data.map((x: any) => x.employee_id);
+        this.reviewers = data
+          .filter((reviewer: any) => reviewer.employee_id !== null)
+          .map((reviewer: any) => reviewer.employee_id);
       });
   }
 
