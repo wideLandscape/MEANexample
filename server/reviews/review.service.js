@@ -41,10 +41,42 @@ async function getById(id) {
     throw new Error('Unable to get the document');
   }
 }
+async function push(doc) {
+  try {
+    return await Reviews.updateOne(
+      { _id: doc.review_id },
+      {
+        $push: {
+          assignments: doc._id
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to push the assignment');
+  }
+}
+async function pull(doc) {
+  try {
+    return await Reviews.updateOne(
+      { _id: doc.review_id },
+      {
+        $pull: {
+          assignments: doc._id
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to pull the assignment');
+  }
+}
 
 module.exports = {
   getAll,
   add,
   update,
-  getById
+  getById,
+  push,
+  pull
 };

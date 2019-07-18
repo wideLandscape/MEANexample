@@ -1,10 +1,14 @@
 // Require Assignment model in our routes module
 const Assignment = require('./assignment.model');
 
+const reviewService = require('../reviews/review.service');
+
 async function add(data) {
   try {
     const assignment = new Assignment(data);
-    return await assignment.save();
+    const doc = await assignment.save();
+    await reviewService.push(doc);
+    return doc;
   } catch (err) {
     console.log(err);
     throw new Error('Unable to assign the reviewer');
@@ -13,7 +17,9 @@ async function add(data) {
 
 async function remove(id) {
   try {
-    return await Assignment.findByIdAndRemove({ _id: id });
+    const doc = await Assignment.findByIdAndRemove({ _id: id });
+    await reviewService.pull(doc);
+    return doc;
   } catch (err) {
     console.log(err);
     throw new Error('Unable to remove the reviewer');
