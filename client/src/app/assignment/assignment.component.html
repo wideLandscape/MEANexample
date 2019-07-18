@@ -33,6 +33,13 @@
           Assigned reviewers:
         </p>
         <p class="card-text" *ngFor="let reviewer of reviewers">
+          <button
+            class="btn btn-outline-danger btn-sm"
+            type="button"
+            (click)="onRemove(reviewer._id)"
+          >
+            &times;
+          </button>
           {{ reviewer.username }}
         </p>
       </div>

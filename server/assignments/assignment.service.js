@@ -15,9 +15,12 @@ async function add(data) {
   }
 }
 
-async function remove(id) {
+async function remove(id, from) {
   try {
-    const doc = await Assignment.findByIdAndRemove({ _id: id });
+    const doc = await Assignment.findOneAndRemove({
+      review_id: from,
+      employee_id: id
+    });
     await reviewService.pull(doc);
     return doc;
   } catch (err) {
@@ -30,7 +33,7 @@ async function getReviewers(review_id) {
     // don't return the password to the client
     return await Assignment.find({ review_id }, { employee_id: 1 }).populate(
       'employee_id',
-      { username: 1 }
+      { username: 1, _id: 1 }
     );
   } catch (err) {
     console.log(err);

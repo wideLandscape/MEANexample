@@ -5,7 +5,7 @@ const assignmentService = require('./assignment.service');
 
 // routes
 router.post('/add', add);
-router.get('/delete/:id', remove);
+router.get('/delete/:id.:from', remove);
 router.get('/reviewers/:id', getReviewers);
 
 module.exports = router;
@@ -18,7 +18,7 @@ function add(req, res, next) {
 }
 function remove(req, res, next) {
   assignmentService
-    .remove(req.params.id)
+    .remove(req.params.id, req.params.from)
     .then(assignment => res.json('Successfully removed'))
     .catch(err => next(err));
 }

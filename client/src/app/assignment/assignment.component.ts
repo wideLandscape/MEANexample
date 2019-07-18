@@ -75,14 +75,13 @@ export class AssignmentComponent implements OnInit {
   }
 
   onRemove(id: string) {
-    this.submitted = true;
+    this.submitted = false;
     this.loading = true;
     this.assignmentsService
-      .delete(id)
+      .delete(id, this.review._id)
       .pipe(first())
       .subscribe((assignment: Assignment) => {
         this.loading = false;
-        this.submitted = false;
         this.getReviewers();
       });
   }
