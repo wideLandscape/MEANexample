@@ -18,14 +18,24 @@
       {{ review.active ? 'Active' : 'Not active' }}
     </span>
   </div>
-  <div class="card-body" (click)="toggleActivation(review)">
-    <div class=" border m-2 p-2">
-      <p class="card-text bold border-bottom">
-        Questions:
-      </p>
-      <p class="card-text" *ngFor="let question of review.questions">
-        {{ question }}
-      </p>
+  <div class="card-body">
+    <div class="row">
+      <div class="col border m-2 p-2">
+        <p class="card-text bold border-bottom">
+          Questions:
+        </p>
+        <p class="card-text" *ngFor="let question of review.questions">
+          {{ question }}
+        </p>
+      </div>
+      <div class="col border border-warning m-2 p-2">
+        <p class="card-text bold border-bottom">
+          Assigned reviewers:
+        </p>
+        <p class="card-text" *ngFor="let reviewer of reviewers">
+          {{ reviewer.username }}
+        </p>
+      </div>
     </div>
   </div>
 </div>

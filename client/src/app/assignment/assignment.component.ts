@@ -19,7 +19,8 @@ export class AssignmentComponent implements OnInit {
   assignForm: FormGroup;
   loading = false;
   submitted = false;
-  employees: Employee[];
+  employees: Employee[] = [];
+  reviewers: Employee[] = [];
   constructor(
     private assignmentsService: AssignmentsService,
     private formBuilder: FormBuilder,
@@ -63,7 +64,7 @@ export class AssignmentComponent implements OnInit {
           this.loading = false;
           this.submitted = false;
           this.assignForm.reset();
-          this.getEmployees();
+          this.getReviewers();
           this.alertService.success('Reviewer assigned');
         },
         error => {
@@ -82,7 +83,16 @@ export class AssignmentComponent implements OnInit {
       .subscribe((assignment: Assignment) => {
         this.loading = false;
         this.submitted = false;
-        this.getEmployees();
+        this.getReviewers();
+      });
+  }
+
+  private getReviewers() {
+    this.assignmentsService
+      .reviewers()
+      .pipe(first())
+      .subscribe((data: any) => {
+        this.reviewers = data.map((x: any) => x.employee_id);
       });
   }
 
@@ -92,6 +102,7 @@ export class AssignmentComponent implements OnInit {
       .pipe(first())
       .subscribe((data: Employee[]) => {
         this.employees = data;
+        this.getReviewers();
       });
   }
 }

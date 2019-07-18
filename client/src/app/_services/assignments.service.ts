@@ -17,4 +17,8 @@ export class AssignmentsService {
   delete(id: string) {
     return this.http.get(`${config.apiUrl}/assignments/delete/${id}`);
   }
+
+  reviewers(id = this.current._id) {
+    return this.http.get(`${config.apiUrl}/assignments/reviewers/${id}`);
+  }
 }
