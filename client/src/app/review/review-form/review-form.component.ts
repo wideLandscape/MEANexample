@@ -73,8 +73,10 @@ export class ReviewFormComponent implements OnInit {
     this.addQuestions();
   }
 
-  selectEmployee(c1: any, c2: any): boolean {
-    return c1 && c2 ? c1._id === c2._id : c1 === c2;
+  selectEmployee(employee1: Employee, employee2: Employee): boolean {
+    return employee1 && employee2
+      ? employee1._id === employee2._id
+      : employee1 === employee2;
   }
 
   onSubmit() {
@@ -117,7 +119,6 @@ export class ReviewFormComponent implements OnInit {
     const validator: ValidatorFn = (formArray: FormArray) => {
       const totalSelected = this.countChecked(formArray);
       // if the total is not greater than the minimum, return the error message
-      console.log(totalSelected);
       return totalSelected >= min ? null : { required: true };
     };
 
@@ -148,12 +149,9 @@ export class ReviewFormComponent implements OnInit {
     this.questions.forEach((question: Question) => {
       checkBoxes.push(review.questions.indexOf(question.text) > -1);
     });
-    const { employee, active } = review;
     return {
       ...review,
-      questions: checkBoxes,
-      employee,
-      active
+      questions: checkBoxes
     };
   }
 }
