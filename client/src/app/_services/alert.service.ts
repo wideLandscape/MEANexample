@@ -2,9 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
+export type messageType = 'success' | 'error';
+export interface Message {
+  type: messageType;
+  text: string;
+}
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  private subject = new Subject<any>();
+  private subject = new Subject<Message>();
 
   constructor(router: Router) {
     // clear alert message on route change
@@ -28,7 +33,7 @@ export class AlertService {
     this.subject.next();
   }
 
-  getMessage(): Observable<any> {
+  getMessage(): Observable<Message> {
     return this.subject.asObservable();
   }
 }
