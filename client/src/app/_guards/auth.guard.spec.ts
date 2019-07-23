@@ -8,6 +8,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { Employee } from '../_models/employee';
 import { AuthenticationService } from '../_services/authentication.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 class MockRouter {
   navigate(path) {}
@@ -56,6 +57,7 @@ describe('AuthGuard', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
         providers: [
           AuthGuard,
           { provide: Router, useClass: MockRouter },
