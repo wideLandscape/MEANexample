@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Employee } from '../_models/employee';
 import { Review } from '../_models/Review';
+import { AssignmentsService } from '../_services/assignments.service';
 
 const baseEmployee: Employee = {
   _id: '1',
@@ -34,7 +35,6 @@ describe('AssignmentComponent', () => {
         RouterTestingModule,
         HttpClientModule
       ],
-
       declarations: [AssignmentComponent]
     }).compileComponents();
   }));
@@ -44,13 +44,18 @@ describe('AssignmentComponent', () => {
       AssignmentComponent
     > = TestBed.createComponent(AssignmentComponent);
     const component: AssignmentComponent = fixture.componentInstance;
+    const assignmentService: AssignmentsService = fixture.debugElement.injector.get(
+      AssignmentsService
+    );
+    assignmentService.current = review;
+
+    component.review = assignmentService.current; // TODO: this is weird
+    fixture.detectChanges();
     return { fixture, component };
   }
 
   it('should create', () => {
-    const { fixture, component } = setup();
-    component.review = review;
-    fixture.detectChanges();
+    const { component } = setup();
     expect(component).toBeTruthy();
   });
 });
