@@ -27,7 +27,14 @@ describe('AlertComponent', () => {
     const alertService: AlertService = fixture.debugElement.injector.get(
       AlertService
     );
-
+    const mockMessage: Message = { type: 'success', text: 'Ciao' };
+    spyOn(alertService, 'getMessage').and.returnValue(
+      Observable.create((observer: Observer<Message>) => {
+        observer.next(mockMessage);
+        return observer;
+      })
+    );
+    fixture.detectChanges();
     return { fixture, component, alertService };
   }
 
@@ -37,18 +44,7 @@ describe('AlertComponent', () => {
   });
 
   it('should display a message', fakeAsync(() => {
-    const { fixture, alertService } = setup();
-    const mockMessage: Message = { type: 'success', text: 'Ciao' };
-    spyOn(alertService, 'getMessage').and.returnValue(
-      Observable.create((observer: Observer<Message>) => {
-        observer.next(mockMessage);
-        return observer;
-      })
-    );
-
-    tick();
-
-    fixture.detectChanges();
+    const { fixture } = setup();
     const alertComponentElement = fixture.debugElement.nativeElement;
     const alertMessage = alertComponentElement.querySelector('div');
     expect(alertMessage.textContent.trim()).toContain('Ciao');
