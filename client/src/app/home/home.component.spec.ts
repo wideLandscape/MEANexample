@@ -1,8 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { AppComponent } from '../app.component';
 import { AlertComponent } from '../_components/alert/alert.component';
 import { AssignmentsService } from '../_services/assignments.service';
@@ -19,7 +20,7 @@ const baseEmployee: Employee = {
 describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [HomeComponent, AlertComponent],
       providers: [AppComponent, AssignmentsService]
     }).compileComponents();

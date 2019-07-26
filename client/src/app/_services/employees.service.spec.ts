@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { EmployeesService } from './employees.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EmployeesService', () => {
   function setup() {
-    TestBed.configureTestingModule({ imports: [HttpClientModule] });
+    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
   }
 
   it('should be created', () => {

@@ -3,7 +3,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { EmployeeFormComponent } from './employee-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeesService } from 'src/app/_services/employees.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Employee } from 'src/app/_models/employee';
 const baseEmployee: Employee = {
@@ -20,7 +20,7 @@ describe('EmployeeFormComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         RouterTestingModule
       ],
       declarations: [EmployeeFormComponent]

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AssignmentComponent } from './assignment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Employee } from '../_models/employee';
 import { Review } from '../_models/Review';
 import { AssignmentsService } from '../_services/assignments.service';
@@ -42,7 +42,7 @@ describe('AssignmentComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       providers: [{ provide: Router, useClass: MockRouter }],
       declarations: [AssignmentComponent]
