@@ -1,24 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { ReviewFormComponent } from './review-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ReviewFormComponent', () => {
-  let component: ReviewFormComponent;
-  let fixture: ComponentFixture<ReviewFormComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
       declarations: [ReviewFormComponent]
     }).compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReviewFormComponent);
-    component = fixture.componentInstance;
+  function setup() {
+    const fixture = TestBed.createComponent(ReviewFormComponent);
+    const component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
+    return { fixture, component };
+  }
   it('should create', () => {
+    const { component } = setup();
     expect(component).toBeTruthy();
   });
 });

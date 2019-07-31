@@ -31,7 +31,7 @@ export class AuthenticationService {
         password
       })
       .pipe(
-        map(employee => {
+        map((employee: Employee) => {
           // login successful if there's a jwt token in the response
           this.checkToken(employee);
           return employee;
@@ -39,7 +39,7 @@ export class AuthenticationService {
       );
   }
 
-  private checkToken(employee: any) {
+  private checkToken(employee: Employee) {
     if (employee && employee.token) {
       // store Employee details and jwt token in local storage to keep Employee logged in between page refreshes
       localStorage.setItem('currentEmployee', JSON.stringify(employee));
