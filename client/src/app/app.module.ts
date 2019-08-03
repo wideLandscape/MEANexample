@@ -14,6 +14,7 @@ import { AlertComponent } from './_components/alert/alert.component';
 import { ReviewComponent } from './review/review.component';
 import { ReviewFormComponent } from './review/review-form/review-form.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { RootStoreModule } from './root-store/root-store.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,8 @@ import { AssignmentComponent } from './assignment/assignment.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RootStoreModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
