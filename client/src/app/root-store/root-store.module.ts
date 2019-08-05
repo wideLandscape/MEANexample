@@ -4,9 +4,6 @@ import { LoginStoreModule } from './login-store/login-store.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    LoginStoreModule
-  ]
+  imports: [CommonModule, LoginStoreModule]
 })
-export class RootStoreModule { }
+export class RootStoreModule {}
