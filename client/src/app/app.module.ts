@@ -14,7 +14,7 @@ import { AlertComponent } from './_components/alert/alert.component';
 import { ReviewComponent } from './review/review.component';
 import { ReviewFormComponent } from './review/review-form/review-form.component';
 import { AssignmentComponent } from './assignment/assignment.component';
-import { RootStoreModule } from './root-store/root-store.module';
+import { RootStoreModule } from './root-store';
 @NgModule({
   declarations: [
     AppComponent,
