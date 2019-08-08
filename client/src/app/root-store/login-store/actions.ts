@@ -2,9 +2,9 @@ import { Action } from '@ngrx/store';
 import { Employee } from '../../_models/employee';
 
 export enum ActionTypes {
-  LOGIN_REQUEST = '[Login] Login Request',
-  LOGIN_FAILURE = '[Login] Login Failure',
-  LOGIN_SUCCESS = '[Login] Login Success'
+  LOGIN_REQUEST = '[Login Page] Login Request',
+  LOGIN_FAILURE = '[Login API] Login Failure',
+  LOGIN_SUCCESS = '[Login API] Login Success'
 }
 
 export class LoginRequestAction implements Action {
