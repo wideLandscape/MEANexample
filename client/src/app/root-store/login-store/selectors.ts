@@ -8,7 +8,7 @@ import { Employee } from '../../_models/employee';
 
 import { State } from './state';
 
-const getError = (state: State): any => state.error;
+const getError = (state: State): string => state.error;
 
 const getIsLoading = (state: State): boolean => state.isLoading;
 
@@ -19,7 +19,10 @@ export const selectLoginState: MemoizedSelector<
   State
 > = createFeatureSelector<State>('login');
 
-export const selectLoginError: MemoizedSelector<object, any> = createSelector(
+export const selectLoginError: MemoizedSelector<
+  object,
+  string
+> = createSelector(
   selectLoginState,
   getError
 );
