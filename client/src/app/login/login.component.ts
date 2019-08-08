@@ -1,17 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-
+import { Observable } from 'rxjs';
 import { AuthenticationService } from '../_services/authentication.service';
-import { AlertService } from '../_services/alert.service';
+import { Store } from '@ngrx/store';
+import {
+  RootStoreState,
+  LoginStoreSelectors,
+  LoginStoreActions
+} from '../root-store/';
+import { Employee } from '../_models/employee';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
   returnUrl: string;
+
+  loginItem$: Observable<Employee>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
 
   // convenience getter for easy access to form fields
   get formControls() {
@@ -23,7 +31,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService
+
+    private store$: Store<RootStoreState.State>
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentEmployeeValue) {
@@ -39,6 +48,14 @@ export class LoginComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+
+    this.loginItem$ = this.store$.select(LoginStoreSelectors.selectLoginUser);
+
+    this.error$ = this.store$.select(LoginStoreSelectors.selectLoginError);
+
+    this.isLoading$ = this.store$.select(
+      LoginStoreSelectors.selectLoginIsLoading
+    );
   }
 
   onSubmit() {
@@ -48,20 +65,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+    const payload = {
+      userName: this.formControls.username.value,
+      password: this.formControls.password.value
+    };
 
-    this.loading = true;
-    this.authenticationService
-      .login(this.formControls.username.value, this.formControls.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.alertService.error(error);
-          console.log('error:', error);
-          this.loading = false;
-        }
-      );
+    this.store$.dispatch(new LoginStoreActions.LoginRequestAction(payload));
   }
 }
