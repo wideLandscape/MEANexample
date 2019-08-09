@@ -17,13 +17,20 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (currentEmployee && currentEmployee.isAdmin) {
-      // logged in as admin so return true
-      return true;
+    if (currentEmployee) {
+      if (currentEmployee.isAdmin) {
+        // logged in as admin so return true
+        return true;
+      }
+      // not logged in as admin so redirect to home page
+      this.router.navigate(['/']);
+    } else {
+      // not logged at all so redirect to login
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: state.url }
+      });
     }
 
-    // not logged in as admin so redirect to home page
-    this.router.navigate(['/']);
     return false;
   }
 }
