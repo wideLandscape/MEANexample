@@ -27,12 +27,14 @@ export class LoginStoreEffects {
       this.authService
         .login(action.payload.userName, action.payload.password)
         .pipe(
-          map(
-            user =>
-              new featureActions.LoginSuccessAction({
+          map(user => {
+            // login successful if there's a jwt token in the response
+            if (user && user.token) {
+              return new featureActions.LoginSuccessAction({
                 user
-              })
-          ),
+              });
+            }
+          }),
           catchError(error =>
             observableOf(new featureActions.LoginFailureAction({ error }))
           )
@@ -45,12 +47,7 @@ export class LoginStoreEffects {
     ofType<featureActions.LoginFailureAction>(
       featureActions.ActionTypes.LOGIN_FAILURE
     ),
-    map(action => {
-      console.log('error$');
-      this.alertService.error(action.payload.error);
-      console.log('error:', action.payload.error);
-      // this.loading = false;
-    })
+    map(action => this.alertService.error(action.payload.error))
   );
 
   @Effect({ dispatch: false })
@@ -59,10 +56,20 @@ export class LoginStoreEffects {
       featureActions.ActionTypes.LOGIN_SUCCESS
     ),
     map(action => {
-      // this.loading = false;
-      console.log('ciao!');
       const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
       this.router.navigate([returnUrl]);
+    })
+  );
+
+  @Effect({ dispatch: false })
+  logoutRequestEffect$: Observable<void> = this.actions$.pipe(
+    ofType<featureActions.LogoutRequestAction>(
+      featureActions.ActionTypes.LOGOUT_REQUEST
+    ),
+    map(action => {
+      // remove Employee from local storage to log Employee out
+      this.authService.logout();
+      this.router.navigate(['/login']);
     })
   );
 }
