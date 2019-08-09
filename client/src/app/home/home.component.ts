@@ -3,8 +3,12 @@ import { Assignment } from '../_models/assignment';
 import { AssignmentsService } from '../_services/assignments.service';
 import { AlertService } from '../_services/alert.service';
 import { first } from 'rxjs/operators';
-import { AppComponent } from '../app.component';
 import { Review } from '../_models/Review';
+import { Observable } from 'rxjs';
+import { Employee } from '../_models/employee';
+// import { Store } from '@ngrx/store';
+// import { RootStoreState } from '../root-store';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -14,16 +18,19 @@ import { Review } from '../_models/Review';
 export class HomeComponent implements OnInit {
   reviews: Review[];
   showForm = false;
-  currentEmployee = this.appComponent.currentEmployee;
+  currentEmployee = this.authenticationSerive.currentEmployeeValue;
+  loginItem$: Observable<Employee>;
   constructor(
-    private appComponent: AppComponent,
     private assignmentsService: AssignmentsService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    //  private store$: Store<RootStoreState.State>,
+    private authenticationSerive: AuthenticationService
   ) {}
 
   ngOnInit() {
     this.assignmentsService.current = null;
-    this.getReviews();
+    // TODO: getReviews with ngrx
+    this.getReviews(this.currentEmployee);
   }
 
   viewForm(show: boolean = true) {
@@ -34,15 +41,15 @@ export class HomeComponent implements OnInit {
   successForm(assignment: Assignment) {
     this.alertService.success('Thank you!');
     this.showForm = false;
-    this.getReviews();
+    this.getReviews(this.currentEmployee);
   }
   errorForm(error: any) {
     this.alertService.error(error);
   }
 
-  private getReviews(todo: boolean = true) {
+  private getReviews(currentEmployee: Employee, todo: boolean = true) {
     this.assignmentsService
-      .byReviewer(this.currentEmployee._id, todo)
+      .byReviewer(currentEmployee._id, todo)
       .pipe(first())
       .subscribe((data: any[]) => {
         this.reviews = data.filter(x => x.review_id).map(x => x.review_id);
