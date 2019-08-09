@@ -5,7 +5,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, exhaustMap } from 'rxjs/operators';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { AlertService } from 'src/app/_services/alert.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as featureActions from './actions';
 
 @Injectable()
@@ -14,6 +14,7 @@ export class LoginStoreEffects {
     private authService: AuthenticationService,
     private alertService: AlertService,
     private router: Router,
+    private route: ActivatedRoute,
     private actions$: Actions
   ) {}
 
@@ -60,7 +61,8 @@ export class LoginStoreEffects {
     map(action => {
       // this.loading = false;
       console.log('ciao!');
-      this.router.navigate(['/']);
+      const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+      this.router.navigate([returnUrl]);
     })
   );
 }
