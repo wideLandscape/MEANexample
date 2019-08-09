@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { RootStoreModule } from '../root-store';
 
 describe('LoginComponent', () => {
   beforeEach(async(() => {
@@ -13,7 +14,8 @@ describe('LoginComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        RootStoreModule
       ],
       declarations: [LoginComponent]
     }).compileComponents();

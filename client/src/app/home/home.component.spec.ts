@@ -4,11 +4,11 @@ import { HomeComponent } from './home.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { AppComponent } from '../app.component';
 import { AlertComponent } from '../_components/alert/alert.component';
 import { AssignmentsService } from '../_services/assignments.service';
 import { Observable, Observer } from 'rxjs';
 import { Employee } from '../_models/employee';
+import { RootStoreModule } from '../root-store';
 const baseEmployee: Employee = {
   _id: '1',
   username: 'username',
@@ -20,9 +20,9 @@ const baseEmployee: Employee = {
 describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, RootStoreModule],
       declarations: [HomeComponent, AlertComponent],
-      providers: [AppComponent, AssignmentsService]
+      providers: [AssignmentsService]
     }).compileComponents();
   }));
 
@@ -30,9 +30,7 @@ describe('HomeComponent', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     const component = fixture.debugElement.componentInstance;
 
-    const appComponent = fixture.debugElement.injector.get(AppComponent);
-    appComponent.currentEmployee = baseEmployee;
-    component.currentEmployee = appComponent.currentEmployee;
+    component.currentEmployee = baseEmployee;
     const mockAssignments: any[] = [
       {
         _id: '1',
