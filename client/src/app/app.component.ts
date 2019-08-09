@@ -12,7 +12,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  currentEmployee: Employee;
   loginItem$: Observable<Employee>;
   constructor(
     private router: Router,
