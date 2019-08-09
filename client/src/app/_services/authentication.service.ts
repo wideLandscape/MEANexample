@@ -29,7 +29,6 @@ export class AuthenticationService {
       .pipe(
         first(),
         map((employee: Employee) => {
-          // login successful if there's a jwt token in the response
           this.loginValue = employee;
           return employee;
         })
@@ -37,8 +36,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove Employee from local storage to log Employee out
-    localStorage.removeItem('user');
-    //  this.currentEmployeeSubject.next(null);
+    this.loginValue = undefined;
   }
 }
