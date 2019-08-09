@@ -3,10 +3,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components/alert/alert.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RootStoreModule } from './root-store';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, RootStoreModule],
       declarations: [AppComponent, AlertComponent]
     }).compileComponents();
   }));
@@ -15,11 +17,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it('should have no currentEmployee', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.currentEmployee).toBeNull();
   });
 });
