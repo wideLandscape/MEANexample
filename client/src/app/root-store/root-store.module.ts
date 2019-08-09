@@ -9,7 +9,15 @@ import { EffectsModule } from '@ngrx/effects';
   imports: [
     CommonModule,
     LoginStoreModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(
+      {},
+      {
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictActionImmutability: true
+        }
+      }
+    ),
     EffectsModule.forRoot([])
   ]
 })
