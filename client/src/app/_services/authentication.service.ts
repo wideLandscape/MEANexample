@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import { Employee } from '../_models/Employee';
 import { config } from '../_helpers/config';
@@ -10,18 +9,15 @@ import { config } from '../_helpers/config';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private currentEmployeeSubject: BehaviorSubject<Employee>;
-  public currentEmployee: Observable<Employee>;
-
+  private loginValue: Employee;
   constructor(private http: HttpClient) {
-    this.currentEmployeeSubject = new BehaviorSubject<Employee>(
-      JSON.parse(localStorage.getItem('currentEmployee'))
-    );
-    this.currentEmployee = this.currentEmployeeSubject.asObservable();
+    this.loginValue = JSON.parse(localStorage.getItem('user'));
   }
 
   public get currentEmployeeValue(): Employee {
-    return this.currentEmployeeSubject.value;
+    return this.loginValue && this.loginValue.token
+      ? this.loginValue
+      : undefined;
   }
 
   login(username: string, password: string) {
@@ -31,25 +27,18 @@ export class AuthenticationService {
         password
       })
       .pipe(
+        first(),
         map((employee: Employee) => {
           // login successful if there's a jwt token in the response
-          this.checkToken(employee);
+          this.loginValue = employee;
           return employee;
         })
       );
   }
 
-  private checkToken(employee: Employee) {
-    if (employee && employee.token) {
-      // store Employee details and jwt token in local storage to keep Employee logged in between page refreshes
-      localStorage.setItem('currentEmployee', JSON.stringify(employee));
-      this.currentEmployeeSubject.next(employee);
-    }
-  }
-
   logout() {
     // remove Employee from local storage to log Employee out
-    localStorage.removeItem('currentEmployee');
-    this.currentEmployeeSubject.next(null);
+    localStorage.removeItem('user');
+    //  this.currentEmployeeSubject.next(null);
   }
 }
