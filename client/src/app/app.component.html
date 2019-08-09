@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-sm bg-light" *ngIf="isLogged()">
+<nav class="navbar navbar-expand-sm bg-light" *ngIf="loginItem$ | async">
   <div class="container-fluid">
-    <ul class="navbar-nav" *ngIf="isAdmin()">
+    <ul class="navbar-nav" *ngIf="(loginItem$ | async).isAdmin">
       <li class="nav-item ac-home-link">
         <a routerLink="" class="nav-link" routerLinkActive="active">
           Home
@@ -18,7 +18,7 @@
       </li>
     </ul>
     <button class="btn btn-sm btn-outline-primary" (click)="logout()">
-      Logout {{ currentEmployee.username }}
+      Logout {{ (loginItem$ | async).username }}
     </button>
   </div>
 </nav>

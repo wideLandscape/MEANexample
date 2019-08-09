@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Employee } from './_models/Employee';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './_services/authentication.service';
+import { Store } from '@ngrx/store';
+import { RootStoreState, LoginStoreSelectors } from './root-store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,24 +13,18 @@ import { AuthenticationService } from './_services/authentication.service';
 })
 export class AppComponent {
   currentEmployee: Employee;
-
+  loginItem$: Observable<Employee>;
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private store$: Store<RootStoreState.State>
   ) {
-    this.authenticationService.currentEmployee.subscribe(
-      currentEmployee => (this.currentEmployee = currentEmployee)
-    );
+    this.loginItem$ = this.store$.select(LoginStoreSelectors.selectLoginUser);
   }
 
   logout() {
+    // TODO: logout action!
     this.authenticationService.logout();
     this.router.navigate(['/login']);
-  }
-  isLogged() {
-    return this.currentEmployee;
-  }
-  isAdmin() {
-    return this.isLogged() && this.currentEmployee.isAdmin;
   }
 }
