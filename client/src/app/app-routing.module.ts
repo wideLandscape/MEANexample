@@ -9,10 +9,11 @@ import { AuthGuard } from './_guards/auth.guard';
 import { AdminGuard } from './_guards/admin.guard';
 import { ReviewComponent } from './review/review.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { LoginGuard } from './_guards/login.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   {
     path: 'employee',
     component: EmployeeComponent,
