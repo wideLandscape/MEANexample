@@ -15,6 +15,8 @@ import { ReviewComponent } from './review/review.component';
 import { ReviewFormComponent } from './review/review-form/review-form.component';
 import { AssignmentComponent } from './assignment/assignment.component';
 import { RootStoreModule } from './root-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +34,8 @@ import { RootStoreModule } from './root-store';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RootStoreModule
+    RootStoreModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25 })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
