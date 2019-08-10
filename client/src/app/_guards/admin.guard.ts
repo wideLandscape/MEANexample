@@ -27,21 +27,24 @@ export class AdminGuard implements CanActivate {
     );
   }
 
-  performActivation(user: Employee, state: RouterStateSnapshot) {
+  private performActivation(user: Employee, state: RouterStateSnapshot) {
     if (user) {
-      if (user.isAdmin) {
-        // logged in as admin so return true
-        return true;
-      }
-      // not logged in as admin so redirect to home page
-      this.router.navigate(['/']);
-    } else {
-      // not logged at all so redirect to login
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: state.url }
-      });
+      return this.checkIsAdmin(user);
     }
+    // not logged at all so redirect to login
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl: state.url }
+    });
 
+    return false;
+  }
+  private checkIsAdmin(user: Employee) {
+    if (user.isAdmin) {
+      // logged in as admin so return true
+      return true;
+    }
+    // not logged in as admin so redirect to home page
+    this.router.navigate(['/']);
     return false;
   }
 }

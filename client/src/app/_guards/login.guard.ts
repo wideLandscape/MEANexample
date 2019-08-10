@@ -28,12 +28,12 @@ export class LoginGuard implements CanActivate {
         return this.performActivation(!user);
       }),
       catchError(err => {
-        return of(true);
+        return of(this.performActivation(true));
       })
     );
   }
 
-  performActivation(active: boolean) {
+  private performActivation(active: boolean) {
     if (active) {
       // not logged in so return true
       return true;

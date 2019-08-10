@@ -22,16 +22,12 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
-      map(user => {
-        return this.performActivation(!!user, state);
-      }),
-      catchError(err => {
-        return of(this.performActivation(false, state));
-      })
+      map(user => this.performActivation(!!user, state)),
+      catchError(err => of(this.performActivation(false, state)))
     );
   }
 
-  performActivation(active: boolean, state: RouterStateSnapshot) {
+  private performActivation(active: boolean, state: RouterStateSnapshot) {
     if (active) {
       // logged in so return true
       return true;
