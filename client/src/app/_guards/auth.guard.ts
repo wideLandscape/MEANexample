@@ -6,18 +6,33 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 
-import { AuthenticationService } from '../_services/authentication.service';
+import { Store } from '@ngrx/store';
+import { RootStoreState, LoginStoreSelectors } from '../root-store';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private store$: Store<RootStoreState.State>
   ) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+      map(user => {
+        return this.performActivation(!!user, state);
+      }),
+      catchError(err => {
+        return of(this.performActivation(false, state));
+      })
+    );
+  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (currentEmployee) {
+  performActivation(active: boolean, state: RouterStateSnapshot) {
+    if (active) {
       // logged in so return true
       return true;
     }
