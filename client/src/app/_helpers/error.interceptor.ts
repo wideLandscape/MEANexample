@@ -7,12 +7,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-import { AuthenticationService } from '../_services/authentication.service';
+import { Store } from '@ngrx/store';
+import { RootStoreState, LoginStoreActions } from '../root-store';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private store$: Store<RootStoreState.State>) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError(err => {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
-          this.authenticationService.logout();
+          this.store$.dispatch(new LoginStoreActions.LogoutRequestAction());
           location.reload();
         }
 
