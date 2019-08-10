@@ -41,12 +41,7 @@ const getReducers = () => {
   reducers[ActionTypes.LOGOUT_REQUEST] = (
     state: State,
     action: LoginRequestAction
-  ) => ({
-    ...state,
-    user: null,
-    error: null,
-    isLoading: false
-  });
+  ) => initialState;
   return reducers;
 };
 
