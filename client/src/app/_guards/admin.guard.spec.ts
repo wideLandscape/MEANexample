@@ -7,8 +7,11 @@ import {
 
 import { AdminGuard } from './admin.guard';
 import { Employee } from '../_models/employee';
-import { AuthenticationService } from '../_services/authentication.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MemoizedSelector, StoreModule, Store } from '@ngrx/store';
+import { LoginStoreSelectors } from '../root-store';
+import { State } from '../root-store/login-store/state';
 
 class MockRouter {
   navigate(path) {}
@@ -43,71 +46,76 @@ const adminEmployee: Employee = {
   isAdmin: true
 };
 
-class MockAuthService {
-  private user: Employee;
-
-  get currentEmployeeValue(): Employee {
-    return this.user;
-  }
-
-  login(username: string, password: string) {
-    this.user = username === 'base' ? baseEmployee : adminEmployee;
-  }
-}
-
 describe('AdminGuard', () => {
   describe('canActivate', () => {
-    let authGuard: AdminGuard;
-    let authService: AuthenticationService;
+    let adminGuard: AdminGuard;
     let router: Router;
     let route: ActivatedRouteSnapshot;
     let state: RouterStateSnapshot;
 
+    let store: MockStore<State>;
+    let loggedUser: MemoizedSelector<State, Employee>;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, StoreModule],
         providers: [
           AdminGuard,
+          provideMockStore(),
           { provide: Router, useClass: MockRouter },
           {
             provide: ActivatedRouteSnapshot,
             useClass: MockActivatedRouteSnapshot
           },
-          { provide: AuthenticationService, useClass: MockAuthService },
           { provide: RouterStateSnapshot, useClass: MockRouterStateSnapshot }
         ]
       });
       router = TestBed.get(Router);
       spyOn(router, 'navigate');
-      authService = TestBed.get(AuthenticationService);
-      // set logged in administrator by default
-      authService.login(adminEmployee.username, 'password');
-      authGuard = TestBed.get(AdminGuard);
+
+      adminGuard = TestBed.get(AdminGuard);
       state = TestBed.get(RouterStateSnapshot);
+      store = TestBed.get(Store);
+      loggedUser = store.overrideSelector(
+        LoginStoreSelectors.selectLoginUser,
+        adminEmployee
+      );
     });
 
     it('Administrator can access admin route when logged in', () => {
       forAdminRoute();
 
-      expect(authGuard.canActivate(route, state)).toEqual(true);
+      adminGuard
+        .canActivate(route, state)
+        .subscribe(b => expect(b).toEqual(true));
     });
 
     it('Simple user cannot access admin route when logged in', () => {
-      authService.login('base', 'password');
+      loggedUser = store.overrideSelector(
+        LoginStoreSelectors.selectLoginUser,
+        baseEmployee
+      );
       forAdminRoute();
-
-      expect(authGuard.canActivate(route, state)).toEqual(false);
-      // redirect to home page
-      expect(router.navigate).toHaveBeenCalledWith(['/']);
+      adminGuard.canActivate(route, state).subscribe(b => {
+        expect(b).toEqual(false);
+        // redirect to home page
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
+      });
     });
 
-    it('Redirect to home page when user is not logged in', () => {
-      // base currently logged in
-      authService.login('base', 'password');
-
-      expect(authGuard.canActivate(route, state)).toEqual(false);
-      // redirect to home page
-      expect(router.navigate).toHaveBeenCalledWith(['/']);
+    it('Redirect to login page when user is not logged in', () => {
+      loggedUser = store.overrideSelector(
+        LoginStoreSelectors.selectLoginUser,
+        undefined
+      );
+      adminGuard.canActivate(route, state).subscribe(b => {
+        expect(b).toEqual(false);
+        // redirect to login page
+        expect(router.navigate).toHaveBeenCalledWith(
+          ['/login'],
+          Object({ queryParams: Object({ returnUrl: '/employee/' }) })
+        );
+      });
     });
 
     function forAdminRoute() {

@@ -5,20 +5,31 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router';
-
-import { AuthenticationService } from '../_services/authentication.service';
+import { Observable, of } from 'rxjs';
+import { LoginStoreSelectors, RootStoreState } from '../root-store';
+import { map, catchError } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Employee } from '../_models/employee';
 
 @Injectable({ providedIn: 'root' })
 export class AdminGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private store$: Store<RootStoreState.State>
   ) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+      map(user => this.performActivation(user, state)),
+      catchError(err => of(this.performActivation(undefined, state)))
+    );
+  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (currentEmployee) {
-      if (currentEmployee.isAdmin) {
+  performActivation(user: Employee, state: RouterStateSnapshot) {
+    if (user) {
+      if (user.isAdmin) {
         // logged in as admin so return true
         return true;
       }
