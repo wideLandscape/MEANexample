@@ -21,6 +21,7 @@
     "@angular/router": "~7.2.0",
     "@ngrx/effects": "^8.2.0",
     "@ngrx/entity": "^8.2.0",
+    "@ngrx/schematics": "^8.2.0",
     "@ngrx/store": "^8.2.0",
     "@ngrx/store-devtools": "^8.2.0",
     "bootstrap": "^4.3.1",
