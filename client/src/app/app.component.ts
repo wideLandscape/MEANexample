@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Employee } from './_models/Employee';
 import { Store } from '@ngrx/store';
-import { RootStoreState, LoginStoreSelectors } from './root-store';
+import {
+  RootStoreState,
+  LoginStoreSelectors,
+  LoginStoreActions
+} from './root-store';
 import { Observable } from 'rxjs';
-import { LogoutRequestAction } from './root-store/login-store/actions';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +20,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.store$.dispatch(new LogoutRequestAction());
+    this.store$.dispatch(new LoginStoreActions.LogoutRequestAction());
   }
 }
