@@ -7,8 +7,12 @@ import {
 
 import { LoginGuard } from './login.guard';
 import { Employee } from '../_models/employee';
-import { AuthenticationService } from '../_services/authentication.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MemoizedSelector, StoreModule, Store } from '@ngrx/store';
+import { LoginStoreSelectors } from '../root-store';
+
+import { State } from '../root-store/login-store/state';
 
 class MockRouter {
   navigate(path) {}
@@ -35,61 +39,61 @@ const baseEmployee: Employee = {
   isAdmin: false
 };
 
-class MockAuthService {
-  private user: Employee;
-
-  get currentEmployeeValue(): Employee {
-    return this.user;
-  }
-
-  login(username: string, password: string) {
-    this.user = username === 'wrong' ? undefined : baseEmployee;
-  }
-}
-
 describe('LoginGuard', () => {
   describe('canActivate', () => {
     let loginGuard: LoginGuard;
-    let authService: AuthenticationService;
     let router: Router;
     let route: ActivatedRouteSnapshot;
     let state: RouterStateSnapshot;
 
+    let store: MockStore<State>;
+    let loggedUser: MemoizedSelector<State, Employee>;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, StoreModule],
         providers: [
           LoginGuard,
+          provideMockStore(),
           { provide: Router, useClass: MockRouter },
           {
             provide: ActivatedRouteSnapshot,
             useClass: MockActivatedRouteSnapshot
           },
-          { provide: AuthenticationService, useClass: MockAuthService },
           { provide: RouterStateSnapshot, useClass: MockRouterStateSnapshot }
         ]
       });
       router = TestBed.get(Router);
       spyOn(router, 'navigate');
-      authService = TestBed.get(AuthenticationService);
-      // set logged in administrator by default
-      authService.login(baseEmployee.username, 'password');
+
       loginGuard = TestBed.get(LoginGuard);
       state = TestBed.get(RouterStateSnapshot);
+      store = TestBed.get(Store);
+      loggedUser = store.overrideSelector(
+        LoginStoreSelectors.selectLoginUser,
+        undefined
+      );
     });
 
-    it('Base user can not access login page when logged in', () => {
+    it('can access login page when not logged in', () => {
       forLoginRoute();
-
-      expect(loginGuard.canActivate(route, state)).toEqual(false);
+      loginGuard
+        .canActivate(route, state)
+        .subscribe(b => expect(b).toEqual(true));
     });
 
     it('Redirect to home page when user is logged in', () => {
-      forLoginRoute();
+      // no user currently logged in
+      loggedUser = store.overrideSelector(
+        LoginStoreSelectors.selectLoginUser,
+        baseEmployee
+      );
 
-      expect(loginGuard.canActivate(route, state)).toEqual(false);
-      // redirect to login page with redirect URL
-      expect(router.navigate).toHaveBeenCalledWith(['/']);
+      loginGuard.canActivate(route, state).subscribe(b => {
+        expect(b).toEqual(false);
+        // redirect to home page
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
+      });
     });
 
     function forLoginRoute() {

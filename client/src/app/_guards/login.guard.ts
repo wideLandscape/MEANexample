@@ -5,7 +5,10 @@ import {
   RouterStateSnapshot,
   Router
 } from '@angular/router';
-import { AuthenticationService } from '../_services/authentication.service';
+import { Store } from '@ngrx/store';
+import { RootStoreState, LoginStoreSelectors } from '../root-store';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,17 +16,30 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private store$: Store<RootStoreState.State>
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (!currentEmployee) {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+      map(user => {
+        return this.performActivation(!user);
+      }),
+      catchError(err => {
+        return of(true);
+      })
+    );
+  }
+
+  performActivation(active: boolean) {
+    if (active) {
       // not logged in so return true
       return true;
     }
 
-    //  logged in so redirect to home page
+    // logged in so redirect to home page
     this.router.navigate(['/']);
     return false;
   }
