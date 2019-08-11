@@ -1,5 +1,5 @@
 import { ReviewActions, ReviewActionTypes } from './review.actions';
-import { initialState, adapter, State } from './review.state';
+import { initialState, State } from './review.state';
 
 export const reviewsFeatureKey = 'reviews';
 
@@ -51,10 +51,3 @@ export function reducer(state = initialState, action: ReviewActions): State {
     }
   }
 }
-
-export const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal
-} = adapter.getSelectors();
