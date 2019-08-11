@@ -8,17 +8,19 @@ export interface State extends EntityState<Review> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Review> = createEntityAdapter<Review>();
+export const adapter: EntityAdapter<Review> = createEntityAdapter<Review>({
+  selectId: model => model._id,
+  sortComparer: (a: Review, b: Review): number =>
+    b._id.toString().localeCompare(a._id.toString())
+});
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
 });
 
-export function reducer(
-  state = initialState,
-  action: ReviewActions
-): State {
+export function reducer(state = initialState, action: ReviewActions): State {
   switch (action.type) {
+    /*
     case ReviewActionTypes.AddReview: {
       return adapter.addOne(action.payload.review, state);
     }
@@ -58,7 +60,7 @@ export function reducer(
     case ReviewActionTypes.ClearReviews: {
       return adapter.removeAll(state);
     }
-
+*/
     default: {
       return state;
     }
@@ -69,5 +71,5 @@ export const {
   selectIds,
   selectEntities,
   selectAll,
-  selectTotal,
+  selectTotal
 } = adapter.getSelectors();
