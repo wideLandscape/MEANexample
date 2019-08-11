@@ -4,6 +4,8 @@ import { Review } from './review.model';
 
 export interface State extends EntityState<Review> {
   // additional entities state properties
+  isLoading?: boolean;
+  error?: string;
 }
 
 export const adapter: EntityAdapter<Review> = createEntityAdapter<Review>({
@@ -14,4 +16,6 @@ export const adapter: EntityAdapter<Review> = createEntityAdapter<Review>({
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
+  isLoading: false,
+  error: null
 });
