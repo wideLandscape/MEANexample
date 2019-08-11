@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
+// import { Update } from '@ngrx/entity';
 import { Review } from './review.model';
 
 export enum ReviewActionTypes {
-  LoadReviews = '[Review] Load Reviews',
+  LoadReviews = '[Review] Load Reviews' /*,
   AddReview = '[Review] Add Review',
   UpsertReview = '[Review] Upsert Review',
   AddReviews = '[Review] Add Reviews',
@@ -12,7 +12,7 @@ export enum ReviewActionTypes {
   UpdateReviews = '[Review] Update Reviews',
   DeleteReview = '[Review] Delete Review',
   DeleteReviews = '[Review] Delete Reviews',
-  ClearReviews = '[Review] Clear Reviews'
+  ClearReviews = '[Review] Clear Reviews'*/
 }
 
 export class LoadReviews implements Action {
@@ -20,7 +20,7 @@ export class LoadReviews implements Action {
 
   constructor(public payload: { reviews: Review[] }) {}
 }
-
+/*
 export class AddReview implements Action {
   readonly type = ReviewActionTypes.AddReview;
 
@@ -72,10 +72,9 @@ export class DeleteReviews implements Action {
 export class ClearReviews implements Action {
   readonly type = ReviewActionTypes.ClearReviews;
 }
-
-export type ReviewActions =
- LoadReviews
- | AddReview
+*/
+export type ReviewActions = LoadReviews;
+/* | AddReview
  | UpsertReview
  | AddReviews
  | UpsertReviews
@@ -84,3 +83,4 @@ export type ReviewActions =
  | DeleteReview
  | DeleteReviews
  | ClearReviews;
+*/
