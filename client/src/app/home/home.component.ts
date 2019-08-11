@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Assignment } from '../_models/assignment';
 import { AssignmentsService } from '../_services/assignments.service';
 import { AlertService } from '../_services/alert.service';
-import { first } from 'rxjs/operators';
 import { Review } from '../_models/Review';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee';
@@ -16,7 +15,6 @@ import { AuthenticationService } from '../_services/authentication.service';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  reviews: Review[];
   showForm = false;
   currentEmployee = this.authenticationSerive.currentEmployeeValue;
   loginItem$: Observable<Employee>;
@@ -31,7 +29,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.assignmentsService.current = null;
-    // TODO: getReviews with ngrx
     this.reviewItems$ = this.store$.select(ReviewSelectors.selectReviewItems);
     this.getReviews(this.currentEmployee);
   }
@@ -50,13 +47,8 @@ export class HomeComponent implements OnInit {
     this.alertService.error(error);
   }
 
-  private getReviews(currentEmployee: Employee, todo: boolean = true) {
-    this.assignmentsService
-      .byReviewer(currentEmployee._id, todo)
-      .pipe(first())
-      .subscribe((data: any[]) => {
-        const reviews = data.filter(x => x.review_id).map(x => x.review_id);
-        this.store$.dispatch(new ReviewActions.LoadReviews({ reviews }));
-      });
+  private getReviews(reviewer: Employee, todo: boolean = true) {
+    const payload = { reviewer, todo };
+    this.store$.dispatch(new ReviewActions.RequestReviews(payload));
   }
 }
