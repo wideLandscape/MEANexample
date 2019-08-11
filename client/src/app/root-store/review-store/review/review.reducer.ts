@@ -1,22 +1,7 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Review } from './review.model';
 import { ReviewActions, ReviewActionTypes } from './review.actions';
+import { initialState, adapter, State } from './review.state';
 
 export const reviewsFeatureKey = 'reviews';
-
-export interface State extends EntityState<Review> {
-  // additional entities state properties
-}
-
-export const adapter: EntityAdapter<Review> = createEntityAdapter<Review>({
-  selectId: model => model._id,
-  sortComparer: (a: Review, b: Review): number =>
-    b._id.toString().localeCompare(a._id.toString())
-});
-
-export const initialState: State = adapter.getInitialState({
-  // additional entity state properties
-});
 
 export function reducer(state = initialState, action: ReviewActions): State {
   switch (action.type) {

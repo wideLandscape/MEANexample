@@ -1,4 +1,5 @@
-import { reducer, initialState } from './review.reducer';
+import { reducer } from './review.reducer';
+import { initialState } from './review.state';
 
 describe('Review Reducer', () => {
   describe('unknown action', () => {
