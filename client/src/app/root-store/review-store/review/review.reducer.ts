@@ -1,10 +1,13 @@
 import { ReviewActions, ReviewActionTypes } from './review.actions';
-import { initialState, State } from './review.state';
+import { initialState, State, adapter } from './review.state';
 
 export const reviewsFeatureKey = 'reviews';
 
 export function reducer(state = initialState, action: ReviewActions): State {
   switch (action.type) {
+    case ReviewActionTypes.LoadReviews: {
+      return adapter.addAll(action.payload.reviews, state);
+    }
     /*
     case ReviewActionTypes.AddReview: {
       return adapter.addOne(action.payload.review, state);
@@ -36,10 +39,6 @@ export function reducer(state = initialState, action: ReviewActions): State {
 
     case ReviewActionTypes.DeleteReviews: {
       return adapter.removeMany(action.payload.ids, state);
-    }
-
-    case ReviewActionTypes.LoadReviews: {
-      return adapter.addAll(action.payload.reviews, state);
     }
 
     case ReviewActionTypes.ClearReviews: {

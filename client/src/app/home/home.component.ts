@@ -6,8 +6,8 @@ import { first } from 'rxjs/operators';
 import { Review } from '../_models/Review';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee';
-// import { Store } from '@ngrx/store';
-// import { RootStoreState } from '../root-store';
+import { Store } from '@ngrx/store';
+import { RootStoreState, ReviewSelectors, ReviewActions } from '../root-store';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -20,16 +20,19 @@ export class HomeComponent implements OnInit {
   showForm = false;
   currentEmployee = this.authenticationSerive.currentEmployeeValue;
   loginItem$: Observable<Employee>;
+  reviewItems$: Observable<Review[]>;
+
   constructor(
     private assignmentsService: AssignmentsService,
     private alertService: AlertService,
-    //  private store$: Store<RootStoreState.State>,
+    private store$: Store<RootStoreState.State>,
     private authenticationSerive: AuthenticationService
   ) {}
 
   ngOnInit() {
     this.assignmentsService.current = null;
     // TODO: getReviews with ngrx
+    this.reviewItems$ = this.store$.select(ReviewSelectors.selectReviewItems);
     this.getReviews(this.currentEmployee);
   }
 
@@ -52,7 +55,8 @@ export class HomeComponent implements OnInit {
       .byReviewer(currentEmployee._id, todo)
       .pipe(first())
       .subscribe((data: any[]) => {
-        this.reviews = data.filter(x => x.review_id).map(x => x.review_id);
+        const reviews = data.filter(x => x.review_id).map(x => x.review_id);
+        this.store$.dispatch(new ReviewActions.LoadReviews({ reviews }));
       });
   }
 }

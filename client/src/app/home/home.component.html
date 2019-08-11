@@ -24,7 +24,7 @@
 
 <div *ngIf="!showForm">
   <div
-    *ngFor="let review of reviews; trackBy: review?._id"
+    *ngFor="let review of reviewItems$ | async; trackBy: review?._id"
     class="card border ac-card-bottom"
   >
     <div class="card-header d-flex justify-content" (click)="viewForm(true)">
