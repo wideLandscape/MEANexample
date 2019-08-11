@@ -5,8 +5,25 @@ export const reviewsFeatureKey = 'reviews';
 
 export function reducer(state = initialState, action: ReviewActions): State {
   switch (action.type) {
+    case ReviewActionTypes.RequestReviews: {
+      return {
+        ...state,
+        error: null,
+        isLoading: true
+      };
+    }
+    case ReviewActionTypes.RequestReviewsFailure: {
+      return {
+        ...state,
+        error: action.payload.error,
+        isLoading: false
+      };
+    }
     case ReviewActionTypes.LoadReviews: {
-      return adapter.addAll(action.payload.reviews, state);
+      return {
+        ...adapter.addAll(action.payload.reviews, state),
+        isLoading: false
+      };
     }
     /*
     case ReviewActionTypes.AddReview: {

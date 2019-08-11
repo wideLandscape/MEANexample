@@ -1,8 +1,11 @@
 import { Action } from '@ngrx/store';
 // import { Update } from '@ngrx/entity';
 import { Review } from './review.model';
+import { Employee } from 'src/app/_models/employee';
 
 export enum ReviewActionTypes {
+  RequestReviews = '[Review] Request Reviews',
+  RequestReviewsFailure = '[Review] Request Reviews Failure',
   LoadReviews = '[Review] Load Reviews' /*,
   AddReview = '[Review] Add Review',
   UpsertReview = '[Review] Upsert Review',
@@ -14,7 +17,14 @@ export enum ReviewActionTypes {
   DeleteReviews = '[Review] Delete Reviews',
   ClearReviews = '[Review] Clear Reviews'*/
 }
-
+export class RequestReviews implements Action {
+  readonly type = ReviewActionTypes.RequestReviews;
+  constructor(public payload: { reviewer: Employee; todo?: boolean }) {}
+}
+export class RequestReviewsFailure implements Action {
+  readonly type = ReviewActionTypes.RequestReviewsFailure;
+  constructor(public payload: { error: string }) {}
+}
 export class LoadReviews implements Action {
   readonly type = ReviewActionTypes.LoadReviews;
 
@@ -73,7 +83,10 @@ export class ClearReviews implements Action {
   readonly type = ReviewActionTypes.ClearReviews;
 }
 */
-export type ReviewActions = LoadReviews;
+export type ReviewActions =
+  | RequestReviews
+  | RequestReviewsFailure
+  | LoadReviews;
 /* | AddReview
  | UpsertReview
  | AddReviews
