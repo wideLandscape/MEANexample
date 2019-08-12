@@ -25,3 +25,46 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## NGRX
+
+### Installation
+
+Install core packages
+
+```
+npm install @ngrx/store @ngrx/store-devtools @ngrx/effects
+ng add @ngrx/store-devtools
+```
+
+Install Entity package
+https://ngrx.io/guide/entity
+
+```
+npm install @ngrx/entity
+```
+
+Install ngrx schematics
+https://ngrx.io/guide/schematics
+
+```
+npm install @ngrx/schematics
+ng config cli.defaultCollection @ngrx/schematics
+```
+
+### How to
+
+Generate module
+
+```
+// root store
+ng g module root-store --flat false --module app.module.ts
+// submodule
+ng generate module root-store/review-store --flat false
+```
+
+Generate Entity
+
+```
+ng generate entity root-store/review-store/Review --flat false -m review-store
+```
