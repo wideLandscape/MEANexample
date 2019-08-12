@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { Employee } from './_models/Employee';
 import { Store } from '@ngrx/store';
-import {
-  RootStoreState,
-  LoginStoreSelectors,
-  LoginStoreActions
-} from './root-store';
+import { RootStoreState, AuthSelectors, AuthActions } from './root-store';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -16,10 +12,10 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   loginItem$: Observable<Employee>;
   constructor(private store$: Store<RootStoreState.State>) {
-    this.loginItem$ = this.store$.select(LoginStoreSelectors.selectLoginUser);
+    this.loginItem$ = this.store$.select(AuthSelectors.selectAuthUser);
   }
 
   logout() {
-    this.store$.dispatch(new LoginStoreActions.LogoutRequestAction());
+    this.store$.dispatch(new AuthActions.LogoutRequestAction());
   }
 }

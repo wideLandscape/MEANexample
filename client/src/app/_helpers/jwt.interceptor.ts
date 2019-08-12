@@ -6,7 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RootStoreState, LoginStoreSelectors } from '../root-store';
+import { RootStoreState, AuthSelectors } from '../root-store';
 import { Store } from '@ngrx/store';
 import { first, flatMap } from 'rxjs/operators';
 import { Employee } from '../_models/employee';
@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+    return this.store$.select(AuthSelectors.selectAuthUser).pipe(
       first(),
       flatMap((user: Employee) => next.handle(this.getRequest(user, request)))
     );

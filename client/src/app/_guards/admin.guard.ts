@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { LoginStoreSelectors, RootStoreState } from '../root-store';
+import { AuthSelectors, RootStoreState } from '../root-store';
 import { map, catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Employee } from '../_models/employee';
@@ -21,7 +21,7 @@ export class AdminGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+    return this.store$.select(AuthSelectors.selectAuthUser).pipe(
       map(user => this.performActivation(user, state)),
       catchError(err => of(this.performActivation(undefined, state)))
     );

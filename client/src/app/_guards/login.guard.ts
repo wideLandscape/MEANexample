@@ -6,7 +6,7 @@ import {
   Router
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { RootStoreState, LoginStoreSelectors } from '../root-store';
+import { RootStoreState, AuthSelectors } from '../root-store';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class LoginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.store$.select(LoginStoreSelectors.selectLoginUser).pipe(
+    return this.store$.select(AuthSelectors.selectAuthUser).pipe(
       map(user => {
         return this.performActivation(!user);
       }),

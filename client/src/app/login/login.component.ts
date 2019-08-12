@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import {
-  RootStoreState,
-  LoginStoreSelectors,
-  LoginStoreActions
-} from '../root-store/';
+import { RootStoreState, AuthSelectors, AuthActions } from '../root-store/';
 import { Employee } from '../_models/employee';
 
 @Component({ templateUrl: 'login.component.html' })
@@ -33,9 +29,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    this.isLoading$ = this.store$.select(
-      LoginStoreSelectors.selectLoginIsLoading
-    );
+    this.isLoading$ = this.store$.select(AuthSelectors.selectAuthIsLoading);
   }
 
   onSubmit() {
@@ -50,6 +44,6 @@ export class LoginComponent implements OnInit {
       password: this.formControls.password.value
     };
 
-    this.store$.dispatch(new LoginStoreActions.LoginRequestAction(payload));
+    this.store$.dispatch(new AuthActions.LoginRequestAction(payload));
   }
 }

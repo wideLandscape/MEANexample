@@ -8,7 +8,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { RootStoreState, LoginStoreActions } from '../root-store';
+import { RootStoreState, AuthActions } from '../root-store';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError(err => {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
-          this.store$.dispatch(new LoginStoreActions.LogoutRequestAction());
+          this.store$.dispatch(new AuthActions.LogoutRequestAction());
           location.reload();
         }
 
