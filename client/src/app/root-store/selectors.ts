@@ -1,9 +1,9 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { LoginStoreSelectors } from './login-store';
 import { ReviewSelectors } from './review-store/review';
+import { AuthSelectors } from './auth-store/auth';
 
 export const selectError: MemoizedSelector<object, string> = createSelector(
-  LoginStoreSelectors.selectLoginError,
+  AuthSelectors.selectAuthError,
   ReviewSelectors.selectReviewError,
   (loginError: string, reviewError: string) => {
     return loginError || reviewError;
@@ -14,7 +14,7 @@ export const selectIsLoading: MemoizedSelector<
   object,
   boolean
 > = createSelector(
-  LoginStoreSelectors.selectLoginIsLoading,
+  AuthSelectors.selectAuthIsLoading,
   ReviewSelectors.selectReviewIsLoading,
   (loginIsLoading: boolean, reviewIsLoading: boolean) => {
     return loginIsLoading || reviewIsLoading;

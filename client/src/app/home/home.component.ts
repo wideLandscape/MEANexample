@@ -8,7 +8,7 @@ import { Employee } from '../_models/employee';
 import { Store } from '@ngrx/store';
 import { RootStoreState, ReviewSelectors, ReviewActions } from '../root-store';
 import { first } from 'rxjs/operators';
-import { selectLoginUser } from '../root-store/login-store/selectors';
+import { selectAuthUser } from '../root-store/auth-store/auth/auth.selectors';
 
 @Component({
   selector: 'app-home',
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
 
   private getReviews(todo: boolean = true) {
     this.store$
-      .select(selectLoginUser)
+      .select(selectAuthUser)
       .pipe(first())
       .subscribe(user => {
         const payload = { idReviewer: user._id, todo };
