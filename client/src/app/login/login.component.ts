@@ -44,6 +44,6 @@ export class LoginComponent implements OnInit {
       password: this.formControls.password.value
     };
 
-    this.store$.dispatch(new AuthActions.LoginRequestAction(payload));
+    this.store$.dispatch(new AuthActions.AuthRequestAction(payload));
   }
 }

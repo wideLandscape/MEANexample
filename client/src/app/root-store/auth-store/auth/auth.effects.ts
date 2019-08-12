@@ -20,9 +20,7 @@ export class AuthEffects {
 
   @Effect()
   loginRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<authActions.LoginRequestAction>(
-      authActions.ActionTypes.LOGIN_REQUEST
-    ),
+    ofType<authActions.AuthRequestAction>(authActions.ActionTypes.AUTH_REQUEST),
     switchMap(action =>
       this.authService
         .login(action.payload.userName, action.payload.password)
@@ -31,13 +29,13 @@ export class AuthEffects {
           map(user => {
             // login successful if there's a jwt token in the response
             if (user && user.token) {
-              return new authActions.LoginSuccessAction({
+              return new authActions.AuthSuccessAction({
                 user
               });
             }
           }),
           catchError(error =>
-            observableOf(new authActions.LoginFailureAction({ error }))
+            observableOf(new authActions.AuthFailureAction({ error }))
           )
         )
     )
@@ -45,17 +43,13 @@ export class AuthEffects {
 
   @Effect({ dispatch: false })
   loginFailureEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.LoginFailureAction>(
-      authActions.ActionTypes.LOGIN_FAILURE
-    ),
+    ofType<authActions.AuthFailureAction>(authActions.ActionTypes.AUTH_FAILURE),
     map(action => this.alertService.error(action.payload.error))
   );
 
   @Effect({ dispatch: false })
   loginSuccessEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.LoginSuccessAction>(
-      authActions.ActionTypes.LOGIN_SUCCESS
-    ),
+    ofType<authActions.AuthSuccessAction>(authActions.ActionTypes.AUTH_SUCCESS),
     map(action => {
       const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
       this.router.navigate([returnUrl]);
@@ -64,8 +58,8 @@ export class AuthEffects {
 
   @Effect({ dispatch: false })
   logoutRequestEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.LogoutRequestAction>(
-      authActions.ActionTypes.LOGOUT_REQUEST
+    ofType<authActions.AuthLogoutRequestAction>(
+      authActions.ActionTypes.AUTH_LOGOUT_REQUEST
     ),
     map(action => {
       this.router.navigate(['/login']);

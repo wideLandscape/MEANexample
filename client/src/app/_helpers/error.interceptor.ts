@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError(err => {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
-          this.store$.dispatch(new AuthActions.LogoutRequestAction());
+          this.store$.dispatch(new AuthActions.AuthLogoutRequestAction());
           location.reload();
         }
 

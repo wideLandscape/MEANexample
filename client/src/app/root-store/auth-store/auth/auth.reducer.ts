@@ -1,9 +1,9 @@
 import {
   Actions,
   ActionTypes,
-  LoginSuccessAction,
-  LoginFailureAction,
-  LoginRequestAction
+  AuthSuccessAction,
+  AuthFailureAction,
+  AuthRequestAction
 } from './auth.actions';
 import { initialState, State } from './auth.state';
 
@@ -15,34 +15,34 @@ interface IReducer {
 
 const getReducers = () => {
   const reducers: IReducer = {};
-  reducers[ActionTypes.LOGIN_REQUEST] = (
+  reducers[ActionTypes.AUTH_REQUEST] = (
     state: State,
-    action: LoginRequestAction
+    action: AuthRequestAction
   ) => ({
     ...state,
     error: null,
     isLoading: true
   });
-  reducers[ActionTypes.LOGIN_SUCCESS] = (
+  reducers[ActionTypes.AUTH_SUCCESS] = (
     state: State,
-    action: LoginSuccessAction
+    action: AuthSuccessAction
   ) => ({
     ...state,
     user: action.payload.user,
     error: null,
     isLoading: false
   });
-  reducers[ActionTypes.LOGIN_FAILURE] = (
+  reducers[ActionTypes.AUTH_FAILURE] = (
     state: State,
-    action: LoginFailureAction
+    action: AuthFailureAction
   ) => ({
     ...state,
     error: action.payload.error,
     isLoading: false
   });
-  reducers[ActionTypes.LOGOUT_REQUEST] = (
+  reducers[ActionTypes.AUTH_LOGOUT_REQUEST] = (
     state: State,
-    action: LoginRequestAction
+    action: AuthRequestAction
   ) => initialState;
   return reducers;
 };

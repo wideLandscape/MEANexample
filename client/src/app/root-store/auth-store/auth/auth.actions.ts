@@ -2,32 +2,32 @@ import { Action } from '@ngrx/store';
 import { Employee } from 'src/app/_models/employee';
 
 export enum ActionTypes {
-  LOGIN_REQUEST = '[Login Page] Login Request',
-  LOGIN_FAILURE = '[Login API] Login Failure',
-  LOGIN_SUCCESS = '[Login API] Login Success',
-  LOGOUT_REQUEST = '[Nav Bar] Logout Request'
+  AUTH_REQUEST = '[Login Page - Submit] Login Request',
+  AUTH_FAILURE = '[Auth API] Login Failure',
+  AUTH_SUCCESS = '[Auth API] Login Success',
+  AUTH_LOGOUT_REQUEST = '[Nav Bar - click] Logout Request'
 }
 
-export class LoginRequestAction implements Action {
-  readonly type = ActionTypes.LOGIN_REQUEST;
+export class AuthRequestAction implements Action {
+  readonly type = ActionTypes.AUTH_REQUEST;
   constructor(public payload: { userName: string; password: string }) {}
 }
 
-export class LoginFailureAction implements Action {
-  readonly type = ActionTypes.LOGIN_FAILURE;
+export class AuthFailureAction implements Action {
+  readonly type = ActionTypes.AUTH_FAILURE;
   constructor(public payload: { error: string }) {}
 }
 
-export class LoginSuccessAction implements Action {
-  readonly type = ActionTypes.LOGIN_SUCCESS;
+export class AuthSuccessAction implements Action {
+  readonly type = ActionTypes.AUTH_SUCCESS;
   constructor(public payload: { user: Employee }) {}
 }
-export class LogoutRequestAction implements Action {
-  readonly type = ActionTypes.LOGOUT_REQUEST;
+export class AuthLogoutRequestAction implements Action {
+  readonly type = ActionTypes.AUTH_LOGOUT_REQUEST;
 }
 
 export type Actions =
-  | LoginRequestAction
-  | LoginFailureAction
-  | LoginSuccessAction
-  | LogoutRequestAction;
+  | AuthRequestAction
+  | AuthFailureAction
+  | AuthSuccessAction
+  | AuthLogoutRequestAction;
