@@ -4,6 +4,7 @@ import { LoginStoreModule } from './login-store/login-store.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ReviewStoreModule } from './review-store/review-store.module';
+import { AuthStoreModule } from './auth-store/auth-store.module';
 
 @NgModule({
   declarations: [],
@@ -11,6 +12,7 @@ import { ReviewStoreModule } from './review-store/review-store.module';
     CommonModule,
     LoginStoreModule,
     ReviewStoreModule,
+    AuthStoreModule,
     StoreModule.forRoot(
       {},
       {
