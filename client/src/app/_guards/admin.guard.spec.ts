@@ -10,8 +10,8 @@ import { Employee } from '../_models/employee';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MemoizedSelector, StoreModule, Store } from '@ngrx/store';
-import { LoginStoreSelectors } from '../root-store';
-import { State } from '../root-store/login-store/state';
+import { AuthSelectors } from '../root-store';
+import { State } from '../root-store/auth-store/auth/auth.state';
 
 class MockRouter {
   navigate(path) {}
@@ -77,7 +77,7 @@ describe('AdminGuard', () => {
       state = TestBed.get(RouterStateSnapshot);
       store = TestBed.get(Store);
       loggedUser = store.overrideSelector(
-        LoginStoreSelectors.selectLoginUser,
+        AuthSelectors.selectAuthUser,
         adminEmployee
       );
     });
@@ -92,7 +92,7 @@ describe('AdminGuard', () => {
 
     it('Simple user cannot access admin route when logged in', () => {
       loggedUser = store.overrideSelector(
-        LoginStoreSelectors.selectLoginUser,
+        AuthSelectors.selectAuthUser,
         baseEmployee
       );
       forAdminRoute();
@@ -105,7 +105,7 @@ describe('AdminGuard', () => {
 
     it('Redirect to login page when user is not logged in', () => {
       loggedUser = store.overrideSelector(
-        LoginStoreSelectors.selectLoginUser,
+        AuthSelectors.selectAuthUser,
         undefined
       );
       adminGuard.canActivate(route, state).subscribe(b => {

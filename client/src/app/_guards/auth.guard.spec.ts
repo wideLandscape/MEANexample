@@ -11,9 +11,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { Store, MemoizedSelector, StoreModule } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { LoginStoreSelectors } from '../root-store';
+import { AuthSelectors } from '../root-store';
 
-import { State } from '../root-store/login-store/state';
+import { State } from '../root-store/auth-store/auth/auth.state';
 
 class MockRouter {
   navigate(path) {}
@@ -71,7 +71,7 @@ describe('AuthGuard', () => {
       state = TestBed.get(RouterStateSnapshot);
       store = TestBed.get(Store);
       loggedUser = store.overrideSelector(
-        LoginStoreSelectors.selectLoginUser,
+        AuthSelectors.selectAuthUser,
         baseEmployee
       );
     });
@@ -86,7 +86,7 @@ describe('AuthGuard', () => {
     it('Redirect to login when user is not logged in', () => {
       // no user currently logged in
       loggedUser = store.overrideSelector(
-        LoginStoreSelectors.selectLoginUser,
+        AuthSelectors.selectAuthUser,
         undefined
       );
 
