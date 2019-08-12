@@ -3,6 +3,8 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
 import { AuthEffects } from './auth.effects';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AuthEffects', () => {
   // tslint:disable-next-line: prefer-const
@@ -11,6 +13,7 @@ describe('AuthEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [AuthEffects, provideMockActions(() => actions$)]
     });
 
