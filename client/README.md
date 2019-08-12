@@ -48,7 +48,7 @@ Install ngrx schematics
 https://ngrx.io/guide/schematics
 
 ```
-npm install @ngrx/schematics
+npm install @ngrx/schematics --save-dev
 ng config cli.defaultCollection @ngrx/schematics
 ```
 
@@ -63,7 +63,7 @@ ng g module root-store --flat false --module app.module.ts
 ng generate module root-store/review-store --flat false
 ```
 
-Generate Entity
+Generate Entity (use it for collections, for unique resources (eg: logged user) go with the standard path)
 
 ```
 ng generate entity root-store/review-store/Review --flat false -m review-store
