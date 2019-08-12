@@ -4,4 +4,5 @@ import * as RootStoreState from './root-state';
 
 export * from './login-store';
 export * from './review-store/review';
+export * from './auth-store/auth';
 export { RootStoreState, RootStoreSelectors, RootStoreModule };
