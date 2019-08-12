@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee';
 import { Store } from '@ngrx/store';
 import { RootStoreState, ReviewSelectors, ReviewActions } from '../root-store';
-import { AuthenticationService } from '../_services/authentication.service';
+import { first } from 'rxjs/operators';
+import { selectLoginUser } from '../root-store/login-store/selectors';
 
 @Component({
   selector: 'app-home',
@@ -16,21 +17,19 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class HomeComponent implements OnInit {
   showForm = false;
-  currentEmployee = this.authenticationSerive.currentEmployeeValue;
   loginItem$: Observable<Employee>;
   reviewItems$: Observable<Review[]>;
 
   constructor(
     private assignmentsService: AssignmentsService,
     private alertService: AlertService,
-    private store$: Store<RootStoreState.State>,
-    private authenticationSerive: AuthenticationService
+    private store$: Store<RootStoreState.State>
   ) {}
 
   ngOnInit() {
     this.assignmentsService.current = null;
     this.reviewItems$ = this.store$.select(ReviewSelectors.selectReviewItems);
-    this.getReviews(this.currentEmployee._id);
+    this.getReviews();
   }
 
   viewForm(show: boolean = true) {
@@ -41,14 +40,19 @@ export class HomeComponent implements OnInit {
   successForm(assignment: Assignment) {
     this.alertService.success('Thank you!');
     this.showForm = false;
-    this.getReviews(this.currentEmployee._id);
+    this.getReviews();
   }
   errorForm(error: any) {
     this.alertService.error(error);
   }
 
-  private getReviews(idReviewer: string, todo: boolean = true) {
-    const payload = { idReviewer, todo };
-    this.store$.dispatch(new ReviewActions.RequestReviews(payload));
+  private getReviews(todo: boolean = true) {
+    this.store$
+      .select(selectLoginUser)
+      .pipe(first())
+      .subscribe(user => {
+        const payload = { idReviewer: user._id, todo };
+        this.store$.dispatch(new ReviewActions.RequestReviews(payload));
+      });
   }
 }
