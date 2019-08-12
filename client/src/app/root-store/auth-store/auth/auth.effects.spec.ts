@@ -5,18 +5,16 @@ import { Observable } from 'rxjs';
 import { AuthEffects } from './auth.effects';
 
 describe('AuthEffects', () => {
+  // tslint:disable-next-line: prefer-const
   let actions$: Observable<any>;
   let effects: AuthEffects;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AuthEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [AuthEffects, provideMockActions(() => actions$)]
     });
 
-    effects = TestBed.get<AuthEffects>(AuthEffects);
+    effects = TestBed.get(AuthEffects);
   });
 
   it('should be created', () => {
