@@ -1,19 +1,10 @@
-
 import { AuthActions, AuthActionTypes } from './auth.actions';
+import { initialState, State } from './auth.state';
 
 export const authFeatureKey = 'auth';
 
-export interface State {
-
-}
-
-export const initialState: State = {
-
-};
-
 export function reducer(state = initialState, action: AuthActions): State {
   switch (action.type) {
-
     case AuthActionTypes.LoadAuths:
       return state;
 
