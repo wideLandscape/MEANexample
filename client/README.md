@@ -60,10 +60,16 @@ Generate module
 // root store
 ng g module root-store --flat false --module app.module.ts
 // submodule
-ng generate module root-store/review-store --flat false
+ng generate module root-store/review-store --flat false -m root-store/root-store.module.ts
 ```
 
-Generate Entity (use it for collections, for unique resources (eg: logged user) go with the standard path)
+Genarate Feature
+
+```
+ng generate feature root-store/auth-store/Auth --flat false -m root-store/auth-store
+```
+
+Generate Entity (use it for collections, for unique resources (eg: logged user) go with the Feature generation)
 
 ```
 ng generate entity root-store/review-store/Review --flat false -m review-store
