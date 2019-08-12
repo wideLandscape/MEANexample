@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, exhaustMap } from 'rxjs/operators';
+import { catchError, map, switchMap, first } from 'rxjs/operators';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { AlertService } from 'src/app/_services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -23,10 +23,11 @@ export class LoginStoreEffects {
     ofType<featureActions.LoginRequestAction>(
       featureActions.ActionTypes.LOGIN_REQUEST
     ),
-    exhaustMap(action =>
+    switchMap(action =>
       this.authService
         .login(action.payload.userName, action.payload.password)
         .pipe(
+          first(),
           map(user => {
             // login successful if there's a jwt token in the response
             if (user && user.token) {
@@ -67,8 +68,6 @@ export class LoginStoreEffects {
       featureActions.ActionTypes.LOGOUT_REQUEST
     ),
     map(action => {
-      // remove Employee from local storage to log Employee out
-      this.authService.logout();
       this.router.navigate(['/login']);
     })
   );
