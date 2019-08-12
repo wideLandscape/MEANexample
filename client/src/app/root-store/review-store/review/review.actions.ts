@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 // import { Update } from '@ngrx/entity';
 import { Review } from './review.model';
-import { Employee } from 'src/app/_models/employee';
 
 export enum ReviewActionTypes {
   RequestReviews = '[Review] Request Reviews',
@@ -19,7 +18,7 @@ export enum ReviewActionTypes {
 }
 export class RequestReviews implements Action {
   readonly type = ReviewActionTypes.RequestReviews;
-  constructor(public payload: { reviewer: Employee; todo?: boolean }) {}
+  constructor(public payload: { idReviewer: string; todo?: boolean }) {}
 }
 export class RequestReviewsFailure implements Action {
   readonly type = ReviewActionTypes.RequestReviewsFailure;

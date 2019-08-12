@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.assignmentsService.current = null;
     this.reviewItems$ = this.store$.select(ReviewSelectors.selectReviewItems);
-    this.getReviews(this.currentEmployee);
+    this.getReviews(this.currentEmployee._id);
   }
 
   viewForm(show: boolean = true) {
@@ -41,14 +41,14 @@ export class HomeComponent implements OnInit {
   successForm(assignment: Assignment) {
     this.alertService.success('Thank you!');
     this.showForm = false;
-    this.getReviews(this.currentEmployee);
+    this.getReviews(this.currentEmployee._id);
   }
   errorForm(error: any) {
     this.alertService.error(error);
   }
 
-  private getReviews(reviewer: Employee, todo: boolean = true) {
-    const payload = { reviewer, todo };
+  private getReviews(idReviewer: string, todo: boolean = true) {
+    const payload = { idReviewer, todo };
     this.store$.dispatch(new ReviewActions.RequestReviews(payload));
   }
 }

@@ -23,7 +23,7 @@ export class ReviewEffects {
     ),
     exhaustMap(action =>
       this.assignmentsService
-        .byReviewer(action.payload.reviewer._id, action.payload.todo)
+        .byReviewer(action.payload.idReviewer, action.payload.todo)
         .pipe(
           first(),
           map((data: any[]) => {
