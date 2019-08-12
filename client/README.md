@@ -48,7 +48,7 @@ Install ngrx schematics
 https://ngrx.io/guide/schematics
 
 ```
-npm install @ngrx/schematics
+npm install @ngrx/schematics --save-dev
 ng config cli.defaultCollection @ngrx/schematics
 ```
 
