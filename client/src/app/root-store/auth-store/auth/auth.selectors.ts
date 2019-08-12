@@ -6,6 +6,7 @@ import {
 
 import { State } from './auth.state';
 import { Employee } from 'src/app/_models/employee';
+import { authFeatureKey } from './auth.reducer';
 
 const getError = (state: State): string => state.error;
 
@@ -16,7 +17,7 @@ const getUser = (state: State): Employee => state.user;
 export const selectAuthState: MemoizedSelector<
   object,
   State
-> = createFeatureSelector<State>('auth');
+> = createFeatureSelector<State>(authFeatureKey);
 
 export const selectAuthError: MemoizedSelector<object, string> = createSelector(
   selectAuthState,
