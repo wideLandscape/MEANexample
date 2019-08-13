@@ -7,7 +7,10 @@ import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee';
 import { Store } from '@ngrx/store';
 import { RootStoreState, ReviewSelectors } from '../root-store';
-import { RequestReviewsByReviewer } from '../root-store/root-store.actions';
+import {
+  RequestReviewsByReviewer,
+  RefreshReviewsByReviewer
+} from '../root-store/root-store.actions';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +31,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.assignmentsService.current = null;
     this.reviewItems$ = this.store$.select(ReviewSelectors.selectReviewItems);
-    this.getReviews();
+    // TODO: manage todo flag
+    this.store$.dispatch(new RequestReviewsByReviewer());
   }
 
   viewForm(show: boolean = true) {
@@ -39,13 +43,9 @@ export class HomeComponent implements OnInit {
   successForm(assignment: Assignment) {
     this.alertService.success('Thank you!');
     this.showForm = false;
-    this.getReviews();
+    this.store$.dispatch(new RefreshReviewsByReviewer());
   }
   errorForm(error: any) {
     this.alertService.error(error);
-  }
-
-  private getReviews(todo: boolean = true) {
-    this.store$.dispatch(new RequestReviewsByReviewer());
   }
 }

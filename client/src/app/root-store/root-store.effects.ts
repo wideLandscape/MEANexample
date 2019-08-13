@@ -7,7 +7,8 @@ import { Store } from '@ngrx/store';
 import { selectAuthUser } from './auth-store/auth/auth.selectors';
 import {
   RequestReviewsByReviewer,
-  RootStoreActionTypes
+  RootStoreActionTypes,
+  RefreshReviewsByReviewer
 } from './root-store.actions';
 import { State } from './root-state';
 import { ReviewActions } from './review-store/review';
@@ -17,8 +18,9 @@ export class RootStoreEffects {
   constructor(private actions$: Actions, private store$: Store<State>) {}
   @Effect({ dispatch: false })
   rootStoreRequestReviewsByReviewerEffect$ = this.actions$.pipe(
-    ofType<RequestReviewsByReviewer>(
-      RootStoreActionTypes.RequestReviewsByReviewer
+    ofType<RequestReviewsByReviewer | RefreshReviewsByReviewer>(
+      RootStoreActionTypes.RequestReviewsByReviewer,
+      RootStoreActionTypes.RefreshReviewsByReviewer
     ),
     map(action => {
       this.store$
