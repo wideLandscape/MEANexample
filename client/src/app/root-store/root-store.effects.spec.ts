@@ -3,6 +3,9 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
 import { RootStoreEffects } from './root-store.effects';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RootStoreModule } from '.';
 
 describe('RootStoreEffects', () => {
   // tslint:disable-next-line: prefer-const
@@ -11,6 +14,7 @@ describe('RootStoreEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule, RootStoreModule],
       providers: [RootStoreEffects, provideMockActions(() => actions$)]
     });
 
