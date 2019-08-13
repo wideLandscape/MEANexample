@@ -6,9 +6,8 @@ import { Review } from '../_models/Review';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee';
 import { Store } from '@ngrx/store';
-import { RootStoreState, ReviewSelectors, ReviewActions } from '../root-store';
-import { first } from 'rxjs/operators';
-import { selectAuthUser } from '../root-store/auth-store/auth/auth.selectors';
+import { RootStoreState, ReviewSelectors } from '../root-store';
+import { RequestReviewsByReviewer } from '../root-store/root-store.actions';
 
 @Component({
   selector: 'app-home',
@@ -47,12 +46,6 @@ export class HomeComponent implements OnInit {
   }
 
   private getReviews(todo: boolean = true) {
-    this.store$
-      .select(selectAuthUser)
-      .pipe(first())
-      .subscribe(user => {
-        const payload = { idReviewer: user._id, todo };
-        this.store$.dispatch(new ReviewActions.RequestReviews(payload));
-      });
+    this.store$.dispatch(new RequestReviewsByReviewer());
   }
 }
