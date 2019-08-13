@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
 
 export enum RootStoreActionTypes {
-  LoadRootStores = '[RootStore] Load RootStores'
+  RequestReviewsByReviewer = '[Home Page - getReviews] Request logged user assigned reviews'
 }
 
-export class LoadRootStores implements Action {
-  readonly type = RootStoreActionTypes.LoadRootStores;
+export class RequestReviewsByReviewer implements Action {
+  readonly type = RootStoreActionTypes.RequestReviewsByReviewer;
 }
 
-export type RootStoreActions = LoadRootStores;
+export type RootStoreActions = RequestReviewsByReviewer;
