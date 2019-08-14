@@ -6,6 +6,7 @@ import * as RootStoreActions from './root-store.actions';
 
 export * from './review-store/review';
 export * from './auth-store/auth';
+export * from './employee-store/employee';
 export {
   RootStoreState,
   RootStoreSelectors,
