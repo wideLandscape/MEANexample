@@ -5,6 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ReviewStoreModule } from './review-store/review-store.module';
 import { AuthStoreModule } from './auth-store/auth-store.module';
 import { RootStoreEffects } from './root-store.effects';
+import { EmployeeStoreModule } from './employee-store/employee-store.module';
 
 @NgModule({
   declarations: [],
@@ -12,6 +13,7 @@ import { RootStoreEffects } from './root-store.effects';
     CommonModule,
     ReviewStoreModule,
     AuthStoreModule,
+    EmployeeStoreModule,
     StoreModule.forRoot(
       {},
       {
