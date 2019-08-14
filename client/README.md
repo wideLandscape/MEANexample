@@ -52,7 +52,7 @@ npm install @ngrx/schematics --save-dev
 ng config cli.defaultCollection @ngrx/schematics
 ```
 
-### How to
+### Cheatsheet
 
 - Generate module
 
@@ -77,4 +77,13 @@ ng generate feature root-store/auth-store/Auth --flat false --creators true -mod
 
 ```
 ng g entity root-store/review-store/Review --flat false --c true -m review-store
+```
+
+- Generate Effect (alias: ef)
+
+```
+// for root module (registered with StoreModule.forRoot() )
+ng generate effect root-store/RootStore --flat false -root -module root-store/root-store -creators true
+// for submodules (registered with StoreModule.forFeature() )
+ng generate ef root-store/review-store/Review --flat false -m root-store/review-store/review-store -c true
 ```
