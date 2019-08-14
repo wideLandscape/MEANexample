@@ -1,4 +1,5 @@
-import { reducer, initialState } from './employee.reducer';
+import { reducer } from './employee.reducer';
+import { initialState } from './employee.state';
 
 describe('Employee Reducer', () => {
   describe('unknown action', () => {
