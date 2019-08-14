@@ -54,23 +54,27 @@ ng config cli.defaultCollection @ngrx/schematics
 
 ### How to
 
-Generate module
+- Generate module
 
 ```
 // root store
-ng g module root-store --flat false --module app.module.ts
+ng generate module root-store --flat false --module app.module.ts
 // submodule
-ng generate module root-store/review-store --flat false -m root-store/root-store.module.ts
+ng g module root-store/review-store --flat false -m root-store/root-store.module.ts
 ```
 
-Genarate Feature
+- Genarate Feature (alias: f)
+
+  for unique resources (eg: logged user)
 
 ```
-ng generate feature root-store/auth-store/Auth --flat false -m root-store/auth-store
+ng generate feature root-store/auth-store/Auth --flat false --creators true -module root-store/auth-store
 ```
 
-Generate Entity (use it for collections, for unique resources (eg: logged user) go with the Feature generation)
+- Generate Entity (alias: en)
+
+  for collections
 
 ```
-ng generate entity root-store/review-store/Review --flat false -m review-store
+ng g entity root-store/review-store/Review --flat false --c true -m review-store
 ```
