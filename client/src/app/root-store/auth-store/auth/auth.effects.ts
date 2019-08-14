@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap, first } from 'rxjs/operators';
@@ -18,51 +18,67 @@ export class AuthEffects {
     private actions$: Actions
   ) {}
 
-  @Effect()
-  loginRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<authActions.AuthRequestAction>(authActions.ActionTypes.AUTH_REQUEST),
-    switchMap(action =>
-      this.authService
-        .login(action.payload.userName, action.payload.password)
-        .pipe(
-          first(),
-          map(user => {
-            // login successful if there's a jwt token in the response
-            if (user && user.token) {
-              return new authActions.AuthSuccessAction({
-                user
-              });
-            }
-          }),
-          catchError(error =>
-            observableOf(new authActions.AuthFailureAction({ error }))
+  loginRequestEffect$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType<authActions.AuthRequestAction>(
+        authActions.ActionTypes.AUTH_REQUEST
+      ),
+      switchMap(action =>
+        this.authService
+          .login(action.payload.userName, action.payload.password)
+          .pipe(
+            first(),
+            map(user => {
+              // login successful if there's a jwt token in the response
+              if (user && user.token) {
+                return new authActions.AuthSuccessAction({
+                  user
+                });
+              }
+            }),
+            catchError(error =>
+              observableOf(new authActions.AuthFailureAction({ error }))
+            )
           )
-        )
+      )
     )
   );
 
-  @Effect({ dispatch: false })
-  loginFailureEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.AuthFailureAction>(authActions.ActionTypes.AUTH_FAILURE),
-    map(action => this.alertService.error(action.payload.error))
+  loginFailureEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<authActions.AuthFailureAction>(
+          authActions.ActionTypes.AUTH_FAILURE
+        ),
+        map(action => this.alertService.error(action.payload.error))
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  loginSuccessEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.AuthSuccessAction>(authActions.ActionTypes.AUTH_SUCCESS),
-    map(action => {
-      const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-      this.router.navigate([returnUrl]);
-    })
+  loginSuccessEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<authActions.AuthSuccessAction>(
+          authActions.ActionTypes.AUTH_SUCCESS
+        ),
+        map(action => {
+          const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+          this.router.navigate([returnUrl]);
+        })
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  logoutRequestEffect$: Observable<void> = this.actions$.pipe(
-    ofType<authActions.AuthLogoutRequestAction>(
-      authActions.ActionTypes.AUTH_LOGOUT_REQUEST
-    ),
-    map(action => {
-      this.router.navigate(['/login']);
-    })
+  logoutRequestEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<authActions.AuthLogoutRequestAction>(
+          authActions.ActionTypes.AUTH_LOGOUT_REQUEST
+        ),
+        map(action => {
+          this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
   );
 }
