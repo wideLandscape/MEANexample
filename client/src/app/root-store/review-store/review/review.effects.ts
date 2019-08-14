@@ -16,30 +16,32 @@ export class ReviewEffects {
     private actions$: Actions
   ) {}
 
-  reviewRequestEffect$: Observable<Action> = createEffect(() =>
-    this.actions$.pipe(
-      ofType<ReviewActions.RequestReviews>(
-        ReviewActions.ReviewActionTypes.RequestReviews
-      ),
-      exhaustMap(action =>
-        this.assignmentsService
-          .byReviewer(action.payload.idReviewer, action.payload.todo)
-          .pipe(
-            first(),
-            map((data: any[]) => {
-              const reviews = data
-                .filter(x => x.review_id)
-                .map(x => x.review_id);
-              return new ReviewActions.LoadReviews({
-                reviews
-              });
-            }),
-            catchError(error =>
-              observableOf(new ReviewActions.RequestReviewsFailure({ error }))
+  reviewRequestEffect$: Observable<Action> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<ReviewActions.RequestReviews>(
+          ReviewActions.ReviewActionTypes.RequestReviews
+        ),
+        exhaustMap(action =>
+          this.assignmentsService
+            .byReviewer(action.payload.idReviewer, action.payload.todo)
+            .pipe(
+              first(),
+              map((data: any[]) => {
+                const reviews = data
+                  .filter(x => x.review_id)
+                  .map(x => x.review_id);
+                return new ReviewActions.LoadReviews({
+                  reviews
+                });
+              }),
+              catchError(error =>
+                observableOf(new ReviewActions.RequestReviewsFailure({ error }))
+              )
             )
-          )
-      )
-    )
+        )
+      ),
+    { resubscribeOnError: false }
   );
 
   reviewRequestFailureEffect$: Observable<void> = createEffect(

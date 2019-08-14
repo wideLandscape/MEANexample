@@ -18,30 +18,32 @@ export class AuthEffects {
     private actions$: Actions
   ) {}
 
-  loginRequestEffect$: Observable<Action> = createEffect(() =>
-    this.actions$.pipe(
-      ofType<authActions.AuthRequestAction>(
-        authActions.ActionTypes.AUTH_REQUEST
-      ),
-      switchMap(action =>
-        this.authService
-          .login(action.payload.userName, action.payload.password)
-          .pipe(
-            first(),
-            map(user => {
-              // login successful if there's a jwt token in the response
-              if (user && user.token) {
-                return new authActions.AuthSuccessAction({
-                  user
-                });
-              }
-            }),
-            catchError(error =>
-              observableOf(new authActions.AuthFailureAction({ error }))
+  loginRequestEffect$: Observable<Action> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<authActions.AuthRequestAction>(
+          authActions.ActionTypes.AUTH_REQUEST
+        ),
+        switchMap(action =>
+          this.authService
+            .login(action.payload.userName, action.payload.password)
+            .pipe(
+              first(),
+              map(user => {
+                // login successful if there's a jwt token in the response
+                if (user && user.token) {
+                  return new authActions.AuthSuccessAction({
+                    user
+                  });
+                }
+              }),
+              catchError(error =>
+                observableOf(new authActions.AuthFailureAction({ error }))
+              )
             )
-          )
-      )
-    )
+        )
+      ),
+    { resubscribeOnError: false }
   );
 
   loginFailureEffect$: Observable<void> = createEffect(
