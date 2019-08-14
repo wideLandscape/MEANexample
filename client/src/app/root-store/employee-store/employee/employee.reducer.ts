@@ -39,10 +39,3 @@ const employeeReducer = createReducer(
 export function reducer(state: State | undefined, action: Action) {
   return employeeReducer(state, action);
 }
-
-export const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal
-} = adapter.getSelectors();
