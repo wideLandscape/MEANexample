@@ -5,13 +5,9 @@ import { map, first } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { selectAuthUser } from './auth-store/auth/auth.selectors';
-import {
-  RequestReviewsByReviewer,
-  RootStoreActionTypes,
-  RefreshReviewsByReviewer
-} from './root-store.actions';
 import { State } from './root-state';
 import { ReviewActions } from './review-store/review';
+import { RootStoreActions } from '.';
 
 @Injectable()
 export class RootStoreEffects {
@@ -20,9 +16,9 @@ export class RootStoreEffects {
   rootStoreRequestReviewsByReviewerEffect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<RequestReviewsByReviewer | RefreshReviewsByReviewer>(
-          RootStoreActionTypes.RequestReviewsByReviewer,
-          RootStoreActionTypes.RefreshReviewsByReviewer
+        ofType(
+          RootStoreActions.requestReviewsByReviewer,
+          RootStoreActions.refreshReviewsByReviewer
         ),
         map(action => {
           this.store$
