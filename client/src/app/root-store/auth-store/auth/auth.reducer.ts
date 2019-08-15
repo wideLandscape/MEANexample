@@ -1,53 +1,29 @@
-import {
-  Actions,
-  ActionTypes,
-  AuthSuccessAction,
-  AuthFailureAction,
-  AuthRequestAction
-} from './auth.actions';
+import { Action, createReducer, on } from '@ngrx/store';
+import * as AuthActions from './auth.actions';
 import { initialState, State } from './auth.state';
 
 export const authFeatureKey = 'auth';
-
-interface IReducer {
-  [key: string]: (state: State, action: Actions) => State;
-}
-
-const getReducers = () => {
-  const reducers: IReducer = {};
-  reducers[ActionTypes.AUTH_REQUEST] = (
-    state: State,
-    action: AuthRequestAction
-  ) => ({
+const authReducer = createReducer(
+  initialState,
+  on(AuthActions.authRequest, (state, action) => ({
     ...state,
     error: null,
     isLoading: true
-  });
-  reducers[ActionTypes.AUTH_SUCCESS] = (
-    state: State,
-    action: AuthSuccessAction
-  ) => ({
+  })),
+  on(AuthActions.authFailure, (state, action) => ({
     ...state,
-    user: action.payload.user,
+    error: action.error,
+    isLoading: false
+  })),
+  on(AuthActions.authSuccess, (state, action) => ({
+    ...state,
+    user: action.user,
     error: null,
     isLoading: false
-  });
-  reducers[ActionTypes.AUTH_FAILURE] = (
-    state: State,
-    action: AuthFailureAction
-  ) => ({
-    ...state,
-    error: action.payload.error,
-    isLoading: false
-  });
-  reducers[ActionTypes.AUTH_LOGOUT_REQUEST] = (
-    state: State,
-    action: AuthRequestAction
-  ) => initialState;
-  return reducers;
-};
+  })),
+  on(AuthActions.authLogoutRequest, (state, action) => initialState)
+);
 
-export function reducer(state: State = initialState, action: Actions): State {
-  const reducers: IReducer = getReducers();
-  return reducers[action.type] ? reducers[action.type](state, action) : state;
+export function reducer(state: State | undefined, action: Action) {
+  return authReducer(state, action);
 }

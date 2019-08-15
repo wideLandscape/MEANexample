@@ -6,7 +6,7 @@ import { catchError, map, switchMap, first } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { AlertService } from 'src/app/_services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as authActions from './auth.actions';
+import { AuthActions } from '.';
 
 @Injectable()
 export class AuthEffects {
@@ -21,26 +21,22 @@ export class AuthEffects {
   loginRequestEffect$: Observable<Action> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<authActions.AuthRequestAction>(
-          authActions.ActionTypes.AUTH_REQUEST
-        ),
+        ofType(AuthActions.authRequest),
         switchMap(action =>
-          this.authService
-            .login(action.payload.userName, action.payload.password)
-            .pipe(
-              first(),
-              map(user => {
-                // login successful if there's a jwt token in the response
-                if (user && user.token) {
-                  return new authActions.AuthSuccessAction({
-                    user
-                  });
-                }
-              }),
-              catchError(error =>
-                observableOf(new authActions.AuthFailureAction({ error }))
-              )
+          this.authService.login(action.userName, action.password).pipe(
+            first(),
+            map(user => {
+              // login successful if there's a jwt token in the response
+              if (user && user.token) {
+                return AuthActions.authSuccess({
+                  user
+                });
+              }
+            }),
+            catchError(error =>
+              observableOf(AuthActions.authFailure({ error }))
             )
+          )
         )
       ),
     { resubscribeOnError: false }
@@ -49,10 +45,8 @@ export class AuthEffects {
   loginFailureEffect$: Observable<void> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<authActions.AuthFailureAction>(
-          authActions.ActionTypes.AUTH_FAILURE
-        ),
-        map(action => this.alertService.error(action.payload.error))
+        ofType(AuthActions.authFailure),
+        map(action => this.alertService.error(action.error))
       ),
     { dispatch: false }
   );
@@ -60,9 +54,7 @@ export class AuthEffects {
   loginSuccessEffect$: Observable<void> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<authActions.AuthSuccessAction>(
-          authActions.ActionTypes.AUTH_SUCCESS
-        ),
+        ofType(AuthActions.authSuccess),
         map(action => {
           const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
           this.router.navigate([returnUrl]);
@@ -74,9 +66,7 @@ export class AuthEffects {
   logoutRequestEffect$: Observable<void> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<authActions.AuthLogoutRequestAction>(
-          authActions.ActionTypes.AUTH_LOGOUT_REQUEST
-        ),
+        ofType(AuthActions.authLogoutRequest),
         map(action => {
           this.router.navigate(['/login']);
         })

@@ -16,6 +16,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.store$.dispatch(new AuthActions.AuthLogoutRequestAction());
+    this.store$.dispatch(AuthActions.authLogoutRequest());
   }
 }
