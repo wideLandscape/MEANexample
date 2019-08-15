@@ -1,13 +1,23 @@
 import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
+// import { Update } from '@ngrx/entity';
 
 import { Employee } from './employee.model';
+
+export const requestEmployees = createAction('[Employee/API] Request Employee');
+
+export const requestEmployeesFailure = createAction(
+  '[Employee/API] Request Employee Failure',
+  props<{ error: string }>()
+);
 
 export const loadEmployees = createAction(
   '[Employee/API] Load Employees',
   props<{ employees: Employee[] }>()
 );
 
+export const refreshEmployees = createAction('[Employee/API] Refresh Employee');
+
+/*
 export const addEmployee = createAction(
   '[Employee/API] Add Employee',
   props<{ employee: Employee }>()
@@ -49,3 +59,4 @@ export const deleteEmployees = createAction(
 );
 
 export const clearEmployees = createAction('[Employee/API] Clear Employees');
+*/
