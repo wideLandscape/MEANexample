@@ -6,6 +6,25 @@ export const employeesFeatureKey = 'employees';
 
 const employeeReducer = createReducer(
   initialState,
+  on(
+    EmployeeActions.requestEmployees,
+    EmployeeActions.refreshEmployees,
+    (state, action) => ({
+      ...state,
+      error: null,
+      loading: true
+    })
+  ),
+  on(EmployeeActions.requestEmployeesFailure, (state, action) => ({
+    ...state,
+    error: action.error,
+    isLoading: false
+  })),
+  on(EmployeeActions.loadEmployees, (state, action) => ({
+    ...adapter.addAll(action.employees, state),
+    isLoading: false
+  }))
+  /*
   on(EmployeeActions.addEmployee, (state, action) =>
     adapter.addOne(action.employee, state)
   ),
@@ -30,10 +49,8 @@ const employeeReducer = createReducer(
   on(EmployeeActions.deleteEmployees, (state, action) =>
     adapter.removeMany(action.ids, state)
   ),
-  on(EmployeeActions.loadEmployees, (state, action) =>
-    adapter.addAll(action.employees, state)
-  ),
   on(EmployeeActions.clearEmployees, state => adapter.removeAll(state))
+  */
 );
 
 export function reducer(state: State | undefined, action: Action) {
