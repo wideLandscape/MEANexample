@@ -4,10 +4,10 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { map, first } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
-import { selectAuthUser } from './auth-store/auth/auth.selectors';
 import { State } from './root-state';
 import { ReviewActions } from './review-store/review';
-import { RootStoreActions } from '.';
+import { AuthSelectors } from './auth-store/auth';
+import * as RootStoreActions from './root-store.actions';
 
 @Injectable()
 export class RootStoreEffects {
@@ -22,11 +22,11 @@ export class RootStoreEffects {
         ),
         map(action => {
           this.store$
-            .select(selectAuthUser)
+            .select(AuthSelectors.selectAuthUser)
             .pipe(first())
             .subscribe(user => {
               const payload = { idReviewer: user._id, todo: true };
-              this.store$.dispatch(new ReviewActions.RequestReviews(payload));
+              this.store$.dispatch(ReviewActions.requestReviews(payload));
             });
         })
       ),

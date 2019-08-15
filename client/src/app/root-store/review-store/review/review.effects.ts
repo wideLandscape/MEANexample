@@ -6,7 +6,7 @@ import { catchError, map, exhaustMap, first } from 'rxjs/operators';
 import { AlertService } from 'src/app/_services/alert.service';
 
 import { AssignmentsService } from 'src/app/_services/assignments.service';
-import { ReviewActions } from '.';
+import * as ReviewActions from './review.actions';
 
 @Injectable()
 export class ReviewEffects {
@@ -19,24 +19,19 @@ export class ReviewEffects {
   reviewRequestEffect$: Observable<Action> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<ReviewActions.RequestReviews>(
-          ReviewActions.ReviewActionTypes.RequestReviews
-        ),
+        ofType(ReviewActions.requestReviews),
         exhaustMap(action =>
           this.assignmentsService
-            .byReviewer(action.payload.idReviewer, action.payload.todo)
+            .byReviewer(action.idReviewer, action.todo)
             .pipe(
               first(),
-              map((data: any[]) => {
-                const reviews = data
-                  .filter(x => x.review_id)
-                  .map(x => x.review_id);
-                return new ReviewActions.LoadReviews({
-                  reviews
-                });
-              }),
+              map((data: any[]) =>
+                ReviewActions.loadReviews({
+                  reviews: data.filter(x => x.review_id).map(x => x.review_id)
+                })
+              ),
               catchError(error =>
-                observableOf(new ReviewActions.RequestReviewsFailure({ error }))
+                observableOf(ReviewActions.requestReviewsFailure({ error }))
               )
             )
         )
@@ -47,10 +42,8 @@ export class ReviewEffects {
   reviewRequestFailureEffect$: Observable<void> = createEffect(
     () =>
       this.actions$.pipe(
-        ofType<ReviewActions.RequestReviewsFailure>(
-          ReviewActions.ReviewActionTypes.RequestReviewsFailure
-        ),
-        map(action => this.alertService.error(action.payload.error))
+        ofType(ReviewActions.requestReviewsFailure),
+        map(action => this.alertService.error(action.error))
       ),
     { dispatch: false }
   );

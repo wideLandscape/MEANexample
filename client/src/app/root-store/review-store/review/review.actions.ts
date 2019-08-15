@@ -1,98 +1,60 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 // import { Update } from '@ngrx/entity';
+
 import { Review } from './review.model';
 
-export enum ReviewActionTypes {
-  RequestReviews = '[Review] Request Reviews',
-  RequestReviewsFailure = '[Review] Request Reviews Failure',
-  LoadReviews = '[Review] Load Reviews' /*,
-  AddReview = '[Review] Add Review',
-  UpsertReview = '[Review] Upsert Review',
-  AddReviews = '[Review] Add Reviews',
-  UpsertReviews = '[Review] Upsert Reviews',
-  UpdateReview = '[Review] Update Review',
-  UpdateReviews = '[Review] Update Reviews',
-  DeleteReview = '[Review] Delete Review',
-  DeleteReviews = '[Review] Delete Reviews',
-  ClearReviews = '[Review] Clear Reviews'*/
-}
-export class RequestReviews implements Action {
-  readonly type = ReviewActionTypes.RequestReviews;
-  constructor(public payload: { idReviewer: string; todo?: boolean }) {}
-}
-export class RequestReviewsFailure implements Action {
-  readonly type = ReviewActionTypes.RequestReviewsFailure;
-  constructor(public payload: { error: string }) {}
-}
-export class LoadReviews implements Action {
-  readonly type = ReviewActionTypes.LoadReviews;
-
-  constructor(public payload: { reviews: Review[] }) {}
-}
+export const requestReviews = createAction(
+  '[Review/API] Request Reviews',
+  props<{ idReviewer: string; todo?: boolean }>()
+);
+export const requestReviewsFailure = createAction(
+  '[Review/API] Request Reviews Failure',
+  props<{ error: string }>()
+);
+export const loadReviews = createAction(
+  '[Review/API] Load Reviews',
+  props<{ reviews: Review[] }>()
+);
 /*
-export class AddReview implements Action {
-  readonly type = ReviewActionTypes.AddReview;
+export const addReview = createAction(
+  '[Review/API] Add Review',
+  props<{ review: Review }>()
+);
 
-  constructor(public payload: { review: Review }) {}
-}
+export const upsertReview = createAction(
+  '[Review/API] Upsert Review',
+  props<{ review: Review }>()
+);
 
-export class UpsertReview implements Action {
-  readonly type = ReviewActionTypes.UpsertReview;
+export const addReviews = createAction(
+  '[Review/API] Add Reviews',
+  props<{ reviews: Review[] }>()
+);
 
-  constructor(public payload: { review: Review }) {}
-}
+export const upsertReviews = createAction(
+  '[Review/API] Upsert Reviews',
+  props<{ reviews: Review[] }>()
+);
 
-export class AddReviews implements Action {
-  readonly type = ReviewActionTypes.AddReviews;
+export const updateReview = createAction(
+  '[Review/API] Update Review',
+  props<{ review: Update<Review> }>()
+);
 
-  constructor(public payload: { reviews: Review[] }) {}
-}
+export const updateReviews = createAction(
+  '[Review/API] Update Reviews',
+  props<{ reviews: Update<Review>[] }>()
+);
 
-export class UpsertReviews implements Action {
-  readonly type = ReviewActionTypes.UpsertReviews;
+export const deleteReview = createAction(
+  '[Review/API] Delete Review',
+  props<{ id: string }>()
+);
 
-  constructor(public payload: { reviews: Review[] }) {}
-}
+export const deleteReviews = createAction(
+  '[Review/API] Delete Reviews',
+  props<{ ids: string[] }>()
+);
 
-export class UpdateReview implements Action {
-  readonly type = ReviewActionTypes.UpdateReview;
-
-  constructor(public payload: { review: Update<Review> }) {}
-}
-
-export class UpdateReviews implements Action {
-  readonly type = ReviewActionTypes.UpdateReviews;
-
-  constructor(public payload: { reviews: Update<Review>[] }) {}
-}
-
-export class DeleteReview implements Action {
-  readonly type = ReviewActionTypes.DeleteReview;
-
-  constructor(public payload: { id: string }) {}
-}
-
-export class DeleteReviews implements Action {
-  readonly type = ReviewActionTypes.DeleteReviews;
-
-  constructor(public payload: { ids: string[] }) {}
-}
-
-export class ClearReviews implements Action {
-  readonly type = ReviewActionTypes.ClearReviews;
-}
-*/
-export type ReviewActions =
-  | RequestReviews
-  | RequestReviewsFailure
-  | LoadReviews;
-/* | AddReview
- | UpsertReview
- | AddReviews
- | UpsertReviews
- | UpdateReview
- | UpdateReviews
- | DeleteReview
- | DeleteReviews
- | ClearReviews;
+export const clearReviews = createAction('[Review/API] Clear Reviews');
 */
