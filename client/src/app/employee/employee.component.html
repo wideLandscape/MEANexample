@@ -18,7 +18,7 @@
 
 <div *ngIf="!showForm">
   <div
-    *ngFor="let employee of employees; trackBy: employee?._id"
+    *ngFor="let employee of employees$ | async; trackBy: employee?._id"
     class="card border ac-card-bottom"
     [class.border-primary]="isActive(employee._id)"
   >

@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RootStoreModule } from '../root-store';
 
 describe('EmployeeComponent', () => {
   beforeEach(async(() => {
@@ -13,7 +14,8 @@ describe('EmployeeComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RootStoreModule
       ],
       declarations: [EmployeeComponent, EmployeeFormComponent]
     }).compileComponents();

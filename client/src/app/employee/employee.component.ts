@@ -3,23 +3,34 @@ import { Employee } from '../_models/Employee';
 import { EmployeesService } from '../_services/employees.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../_services/alert.service';
+import { Store } from '@ngrx/store';
+import {
+  RootStoreState,
+  EmployeeSelectors,
+  EmployeeActions
+} from '../root-store';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.sass']
 })
 export class EmployeeComponent implements OnInit {
-  employees: Employee[];
+  employees$: Observable<Employee[]>;
+
   activeId = '';
   showForm = false;
   editableEmployee: Employee;
   constructor(
     private employeesService: EmployeesService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private store$: Store<RootStoreState.State>
   ) {}
 
   ngOnInit() {
-    this.getEmployees();
+    this.employees$ = this.store$.select(EmployeeSelectors.selectEmployeeItems);
+    this.store$.dispatch(EmployeeActions.requestEmployees());
   }
 
   isActive(id: string) {
@@ -59,7 +70,7 @@ export class EmployeeComponent implements OnInit {
       .subscribe(data => {
         this.alertService.success('Deleted successfully');
         this.showForm = false;
-        this.getEmployees();
+        this.store$.dispatch(EmployeeActions.refreshEmployees());
       });
   }
 
@@ -69,17 +80,9 @@ export class EmployeeComponent implements OnInit {
     );
     this.showForm = false;
     this.editableEmployee = undefined;
-    this.getEmployees();
+    this.store$.dispatch(EmployeeActions.refreshEmployees());
   }
   errorForm(error: any) {
     this.alertService.error(error);
-  }
-  private getEmployees() {
-    this.employeesService
-      .getAll()
-      .pipe(first())
-      .subscribe((data: Employee[]) => {
-        this.employees = data;
-      });
   }
 }
