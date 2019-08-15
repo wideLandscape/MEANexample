@@ -3,6 +3,8 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
 import { EmployeeEffects } from './employee.effects';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('EmployeeEffects', () => {
   // tslint:disable-next-line: prefer-const
@@ -11,6 +13,7 @@ describe('EmployeeEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [EmployeeEffects, provideMockActions(() => actions$)]
     });
 
