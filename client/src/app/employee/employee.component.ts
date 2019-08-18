@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Employee } from '../_models/Employee';
 import { EmployeesService } from '../_services/employees.service';
 import { first } from 'rxjs/operators';
@@ -39,6 +39,10 @@ export class EmployeeComponent implements OnInit {
   toggleActivation(employee: Employee) {
     this.store$.dispatch(EmployeeActions.selectEmployee({ id: employee._id }));
     this.editableEmployee = undefined;
+  }
+
+  isActive(activeId: string, employeeId: string) {
+    return activeId === employeeId;
   }
 
   toggleShowForm() {
