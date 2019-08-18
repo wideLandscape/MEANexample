@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.sass']
+  styleUrls: ['./employee.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeeComponent implements OnInit {
   employees$: Observable<Employee[]>;

@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { RootStoreState, AuthSelectors, AuthActions } from '../root-store/';
 import { Employee } from '../_models/employee';
 
-@Component({ templateUrl: 'login.component.html' })
+@Component({
+  templateUrl: 'login.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
