@@ -6,6 +6,7 @@ export interface State extends EntityState<Employee> {
   // additional entities state properties
   isLoading?: boolean;
   error?: string;
+  activeId: string;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>({
@@ -17,5 +18,6 @@ export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>({
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   isLoading: false,
-  error: null
+  error: null,
+  activeId: ''
 });

@@ -18,8 +18,8 @@ import { Observable } from 'rxjs';
 })
 export class EmployeeComponent implements OnInit {
   employees$: Observable<Employee[]>;
+  selected$: Observable<string>;
 
-  activeId = '';
   showForm = false;
   editableEmployee: Employee;
   constructor(
@@ -30,22 +30,21 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.employees$ = this.store$.select(EmployeeSelectors.selectEmployeeItems);
+    this.selected$ = this.store$.select(
+      EmployeeSelectors.selectEmployeeActiveId
+    );
     this.store$.dispatch(EmployeeActions.requestEmployees());
   }
 
-  isActive(id: string) {
-    return this.activeId === id;
-  }
-
   toggleActivation(employee: Employee) {
-    this.activeId = employee._id === this.activeId ? '' : employee._id;
+    this.store$.dispatch(EmployeeActions.selectEmployee({ id: employee._id }));
     this.editableEmployee = undefined;
   }
 
   toggleShowForm() {
     if (!this.showForm) {
-      // close list as we are adding a new employee
-      this.activeId = '';
+      // close list as we are going to add a new employee
+      this.store$.dispatch(EmployeeActions.selectEmployee({ id: '' }));
     }
     this.showForm = !this.showForm;
     this.editableEmployee = undefined;

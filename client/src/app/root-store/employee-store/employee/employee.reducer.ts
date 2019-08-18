@@ -12,7 +12,8 @@ const employeeReducer = createReducer(
     (state, action) => ({
       ...state,
       error: null,
-      loading: true
+      loading: true,
+      selected: null
     })
   ),
   on(EmployeeActions.requestEmployeesFailure, (state, action) => ({
@@ -23,6 +24,10 @@ const employeeReducer = createReducer(
   on(EmployeeActions.loadEmployees, (state, action) => ({
     ...adapter.addAll(action.employees, state),
     isLoading: false
+  })),
+  on(EmployeeActions.selectEmployee, (state, action) => ({
+    ...state,
+    activeId: action.id === state.activeId ? null : action.id
   }))
   /*
   on(EmployeeActions.addEmployee, (state, action) =>

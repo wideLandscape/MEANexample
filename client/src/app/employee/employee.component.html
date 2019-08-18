@@ -20,16 +20,16 @@
   <div
     *ngFor="let employee of employees$ | async; trackBy: employee?._id"
     class="card border ac-card-bottom"
-    [class.border-primary]="isActive(employee._id)"
+    [class.border-primary]="(selected$ | async) === employee._id"
   >
     <div
       class="card-header"
-      [class.border-primary]="isActive(employee._id)"
+      [class.border-primary]="(selected$ | async) === employee._id"
       (click)="toggleActivation(employee)"
     >
       {{ employee.username }}
     </div>
-    <div class="card-body" *ngIf="isActive(employee._id)">
+    <div class="card-body" *ngIf="(selected$ | async) === employee._id">
       <p class="card-text font-weight-bold" *ngIf="employee.isAdmin">
         Admin
       </p>
