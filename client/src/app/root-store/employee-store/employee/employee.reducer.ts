@@ -10,10 +10,8 @@ const employeeReducer = createReducer<State, Action>(
     EmployeeActions.requestEmployees,
     EmployeeActions.refreshEmployees,
     (state, action) => ({
-      ...state,
-      error: null,
-      loading: true,
-      activeEmployeeId: ''
+      ...initialState,
+      loading: true
     })
   ),
   on(EmployeeActions.requestEmployeesFailure, (state, action) => ({
@@ -27,12 +25,31 @@ const employeeReducer = createReducer<State, Action>(
   })),
   on(EmployeeActions.selectActiveEmployeeId, (state, action) => ({
     ...state,
-    activeEmployeeId: action.id === state.activeEmployeeId ? '' : action.id
+    activeId: action.id === state.activeId ? '' : action.id,
+    editable: null
+  })),
+  on(EmployeeActions.editEmployee, (state, action) => ({
+    ...state,
+    editable: action.employee,
+    formVisibility: true
+  })),
+  on(EmployeeActions.toggleFormVisibility, (state, action) => ({
+    ...state,
+    activeId: !state.formVisibility ? '' : state.activeId,
+    formVisibility: !state.formVisibility,
+    editable: null
+  })),
+  on(EmployeeActions.successForm, (state, action) => ({
+    ...state,
+    formVisibility: false,
+    editable: null
+  })),
+  on(EmployeeActions.deleteEmployee, (state, action) => ({
+    ...adapter.removeOne(action.id, state),
+    activeId: ''
   }))
+
   /*
-  on(EmployeeActions.addEmployee, (state, action) =>
-    adapter.addOne(action.employee, state)
-  ),
   on(EmployeeActions.upsertEmployee, (state, action) =>
     adapter.upsertOne(action.employee, state)
   ),

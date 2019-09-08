@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of as observableOf } from 'rxjs';
-import { exhaustMap, first, map, catchError } from 'rxjs/operators';
+import { exhaustMap, first, map, catchError, switchMap } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import * as EmployeeActions from './employee.actions';
 import { EmployeesService } from 'src/app/_services/employees.service';
@@ -45,6 +45,44 @@ export class EmployeeEffects {
       this.actions$.pipe(
         ofType(EmployeeActions.requestEmployeesFailure),
         map(action => this.alertService.error(action.error))
+      ),
+    { dispatch: false }
+  );
+
+  employeeToggleFormVisibilityEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EmployeeActions.toggleFormVisibility),
+        map(action => this.alertService.close())
+      ),
+    { dispatch: false }
+  );
+  employeeSuccessFormEffect$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmployeeActions.successForm),
+      map(action => {
+        this.alertService.success(
+          action.new ? 'Employee created' : 'Successful update'
+        );
+        return EmployeeActions.refreshEmployees();
+      })
+    )
+  );
+
+  employeeErrorFormEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EmployeeActions.errorForm),
+        map(action => this.alertService.error(action.error))
+      ),
+    { dispatch: false }
+  );
+
+  employeeDeleteEmployeeEffect$: Observable<void> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EmployeeActions.deleteEmployee),
+        map(action => this.alertService.success('Deleted successfully'))
       ),
     { dispatch: false }
   );

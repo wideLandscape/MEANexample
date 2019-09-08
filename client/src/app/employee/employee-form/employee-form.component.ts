@@ -5,6 +5,11 @@ import { first } from 'rxjs/operators';
 import { EmployeesService } from '../../_services/employees.service';
 import { Employee } from 'src/app/_models/Employee';
 
+export interface SavedEmployee {
+  employee: Employee;
+  new: boolean;
+}
+
 type Label = 'Save' | 'Update';
 
 @Component({
@@ -19,7 +24,7 @@ export class EmployeeFormComponent implements OnInit {
   label: Label = 'Save';
   id = '';
   @Output()
-  success: EventEmitter<Employee> = new EventEmitter<Employee>();
+  success: EventEmitter<SavedEmployee> = new EventEmitter<SavedEmployee>();
   @Output()
   error: EventEmitter<any> = new EventEmitter<any>();
   @Input('employee')
@@ -76,7 +81,10 @@ export class EmployeeFormComponent implements OnInit {
           this.loading = false;
           this.submitted = false;
           this.registerForm.reset();
-          this.success.emit(data as Employee);
+          this.success.emit({
+            employee: data as Employee,
+            new: this.id === ''
+          });
         },
         error => {
           this.loading = false;

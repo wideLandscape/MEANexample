@@ -13,7 +13,7 @@ export const selectEmployeeState: MemoizedSelector<
 > = createFeatureSelector<State>(employeesFeatureKey);
 
 // SELECTORS AVAILABLE OUT OF THE BOX
-const {
+export const {
   // selectIds,
   // selectEntities,
   selectAll
@@ -24,10 +24,12 @@ export const getError = (state: State): any => state.error;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getActiveEmployeeId = (state: State): string =>
-  state.activeEmployeeId;
+export const getActiveEmployeeId = (state: State): string => state.activeId;
 
-export const selectEmployeeItems: (state: object) => Employee[] = selectAll;
+export const getEditable = (state: State): Employee => state.editable;
+
+export const getFormVisibility = (state: State): boolean =>
+  state.formVisibility;
 
 export const selectEmployeeError: MemoizedSelector<
   object,
@@ -51,4 +53,18 @@ export const selectEmployeeActiveId: MemoizedSelector<
 > = createSelector(
   selectEmployeeState,
   getActiveEmployeeId
+);
+export const selectEmployeeEditable: MemoizedSelector<
+  object,
+  Employee
+> = createSelector(
+  selectEmployeeState,
+  getEditable
+);
+export const selectEmployeeFormVisibility: MemoizedSelector<
+  object,
+  boolean
+> = createSelector(
+  selectEmployeeState,
+  getFormVisibility
 );

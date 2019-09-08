@@ -10,7 +10,7 @@
 
 <div class="collapse" [class.show]="showForm">
   <app-employee-form
-    [employee]="editableEmployee"
+    [employee]="editableEmployee$ | async"
     (success)="successForm($event)"
     (error)="errorForm($event)"
   ></app-employee-form>
@@ -40,7 +40,7 @@
           <button
             class="btn btn-primary"
             type="button"
-            (click)="showEditForm(employee._id)"
+            (click)="editEmployee(employee)"
           >
             Edit
           </button>

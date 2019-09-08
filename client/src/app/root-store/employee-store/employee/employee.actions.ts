@@ -21,6 +21,27 @@ export const selectActiveEmployeeId = createAction(
   '[Employee/Page] Select Active Employee Id',
   props<{ id: string }>()
 );
+export const editEmployee = createAction(
+  '[Employee/Page] Show Edit Employee Form',
+  props<{ employee: Employee }>()
+);
+export const toggleFormVisibility = createAction(
+  '[Employee/Page] Toggle Form Visibility'
+);
+
+export const successForm = createAction(
+  '[Employee/Page] Save Form Success',
+  props<{ new: boolean }>()
+);
+export const errorForm = createAction(
+  '[Employee/Page] Save Form Error',
+  props<{ error: any }>()
+);
+
+export const deleteEmployee = createAction(
+  '[Employee/API] Delete Employee',
+  props<{ id: string }>()
+);
 
 /*
 export const addEmployee = createAction(
@@ -51,11 +72,6 @@ export const updateEmployee = createAction(
 export const updateEmployees = createAction(
   '[Employee/API] Update Employees',
   props<{ employees: Update<Employee>[] }>()
-);
-
-export const deleteEmployee = createAction(
-  '[Employee/API] Delete Employee',
-  props<{ id: string }>()
 );
 
 export const deleteEmployees = createAction(

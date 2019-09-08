@@ -4,9 +4,11 @@ import { Employee } from './employee.model';
 
 export interface State extends EntityState<Employee> {
   // additional entities state properties
-  isLoading?: boolean;
-  error?: string;
-  activeEmployeeId: string;
+  isLoading: boolean;
+  error: string;
+  activeId: string;
+  editable: Employee;
+  formVisibility: boolean;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>({
@@ -19,5 +21,7 @@ export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   isLoading: false,
   error: null,
-  activeEmployeeId: ''
+  activeId: '',
+  editable: null,
+  formVisibility: false
 });
