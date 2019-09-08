@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import {
   EmployeeActions,
@@ -17,9 +22,9 @@ import { EmployeesService } from '../_services/employees.service';
   styleUrls: ['./employee.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
   employees$: Observable<Employee[]>;
-  selected$: Observable<string>;
+  selectEmployeeSubscription: Subscription;
 
   showForm = false;
   editableEmployee: Employee;
@@ -33,10 +38,16 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.employees$ = this.store$.select(EmployeeSelectors.selectEmployeeItems);
-    this.selected$ = this.store$.select(
-      EmployeeSelectors.selectEmployeeActiveId
-    );
+    this.selectEmployeeSubscription = this.store$
+      .select(EmployeeSelectors.selectEmployeeActiveId)
+      .subscribe((activeId: string) => {
+        this.activeEmployeeId = activeId;
+      });
     this.store$.dispatch(EmployeeActions.requestEmployees());
+  }
+
+  ngOnDestroy() {
+    this.selectEmployeeSubscription.unsubscribe();
   }
 
   toggleActiveEmployee(employee: Employee) {
@@ -46,8 +57,8 @@ export class EmployeeComponent implements OnInit {
     this.editableEmployee = undefined;
   }
 
-  isActive(activeId: string, employeeId: string) {
-    return activeId === employeeId;
+  isActive(employeeId: string) {
+    return this.activeEmployeeId === employeeId;
   }
 
   toggleShowForm() {
