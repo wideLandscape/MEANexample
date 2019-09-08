@@ -17,8 +17,8 @@ export const loadEmployees = createAction(
 
 export const refreshEmployees = createAction('[Employee/API] Refresh Employee');
 
-export const selectEmployee = createAction(
-  '[Employee/Page] Select Employee',
+export const selectActiveEmployeeId = createAction(
+  '[Employee/Page] Select Active Employee Id',
   props<{ id: string }>()
 );
 

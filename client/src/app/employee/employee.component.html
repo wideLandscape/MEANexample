@@ -25,7 +25,7 @@
     <div
       class="card-header"
       [class.border-primary]="isActive(selected$ | async, employee._id)"
-      (click)="toggleActivation(employee)"
+      (click)="toggleActiveEmployee(employee)"
     >
       {{ employee.username }}
     </div>

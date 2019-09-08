@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Employee } from '../_models/Employee';
-import { EmployeesService } from '../_services/employees.service';
-import { first } from 'rxjs/operators';
-import { AlertService } from '../_services/alert.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  RootStoreState,
-  EmployeeSelectors,
-  EmployeeActions
-} from '../root-store';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+import {
+  EmployeeActions,
+  EmployeeSelectors,
+  RootStoreState
+} from '../root-store';
+import { Employee } from '../_models/Employee';
+import { AlertService } from '../_services/alert.service';
+import { EmployeesService } from '../_services/employees.service';
 
 @Component({
   selector: 'app-employee',
@@ -23,6 +23,8 @@ export class EmployeeComponent implements OnInit {
 
   showForm = false;
   editableEmployee: Employee;
+  activeEmployeeId = '';
+
   constructor(
     private employeesService: EmployeesService,
     private alertService: AlertService,
@@ -37,8 +39,10 @@ export class EmployeeComponent implements OnInit {
     this.store$.dispatch(EmployeeActions.requestEmployees());
   }
 
-  toggleActivation(employee: Employee) {
-    this.store$.dispatch(EmployeeActions.selectEmployee({ id: employee._id }));
+  toggleActiveEmployee(employee: Employee) {
+    this.store$.dispatch(
+      EmployeeActions.selectActiveEmployeeId({ id: employee._id })
+    );
     this.editableEmployee = undefined;
   }
 
@@ -49,7 +53,7 @@ export class EmployeeComponent implements OnInit {
   toggleShowForm() {
     if (!this.showForm) {
       // close list as we are going to add a new employee
-      this.store$.dispatch(EmployeeActions.selectEmployee({ id: '' }));
+      this.store$.dispatch(EmployeeActions.selectActiveEmployeeId({ id: '' }));
     }
     this.showForm = !this.showForm;
     this.editableEmployee = undefined;

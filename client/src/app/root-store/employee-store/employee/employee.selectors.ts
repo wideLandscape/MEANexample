@@ -24,7 +24,8 @@ export const getError = (state: State): any => state.error;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getActiveId = (state: State): string => state.activeId;
+export const getActiveEmployeeId = (state: State): string =>
+  state.activeEmployeeId;
 
 export const selectEmployeeItems: (state: object) => Employee[] = selectAll;
 
@@ -49,5 +50,5 @@ export const selectEmployeeActiveId: MemoizedSelector<
   string
 > = createSelector(
   selectEmployeeState,
-  getActiveId
+  getActiveEmployeeId
 );

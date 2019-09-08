@@ -4,7 +4,7 @@ import { initialState, adapter, State } from './employee.state';
 
 export const employeesFeatureKey = 'employees';
 
-const employeeReducer = createReducer(
+const employeeReducer = createReducer<State, Action>(
   initialState,
   on(
     EmployeeActions.requestEmployees,
@@ -13,7 +13,7 @@ const employeeReducer = createReducer(
       ...state,
       error: null,
       loading: true,
-      selected: null
+      activeEmployeeId: ''
     })
   ),
   on(EmployeeActions.requestEmployeesFailure, (state, action) => ({
@@ -25,9 +25,9 @@ const employeeReducer = createReducer(
     ...adapter.addAll(action.employees, state),
     isLoading: false
   })),
-  on(EmployeeActions.selectEmployee, (state, action) => ({
+  on(EmployeeActions.selectActiveEmployeeId, (state, action) => ({
     ...state,
-    activeId: action.id === state.activeId ? null : action.id
+    activeEmployeeId: action.id === state.activeEmployeeId ? '' : action.id
   }))
   /*
   on(EmployeeActions.addEmployee, (state, action) =>
